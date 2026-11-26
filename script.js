@@ -47,12 +47,13 @@ const voiceButton = document.getElementById("voice-btn");
 const systemLog = document.getElementById("system-log");
 
 
-// TIME FORMAT — 12-HOUR, NO AM/PM
+// TIME FORMAT — 12-HOUR, WITH SECONDS, NO AM/PM
 
 function getFormattedTime() {
   return new Date().toLocaleTimeString(undefined, {
     hour: "numeric",
     minute: "2-digit",
+    second: "2-digit",
     hour12: true
   }).replace(/\s?[AP]M/i, "");
 }
@@ -478,4 +479,4 @@ addLog("MILES JAVASCRIPT ENGINE LOADED");
 addLog("SYSTEM INITIALIZATION COMPLETE");
 
 console.log("MILES MORALES AI SYSTEM INITIALIZED");
-     
+   

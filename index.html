@@ -1,0 +1,223 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#050914">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>MILES MORALES | AI SYSTEM</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <div class="background-grid"></div>
+  <div class="scanline"></div>
+
+  <main class="dashboard">
+
+    <!-- TOP BAR -->
+    <header class="topbar">
+      <div class="brand">
+        <div class="spider-logo">M</div>
+        <div>
+          <h1>MILES <span>MORALES</span></h1>
+          <p>PERSONAL ARTIFICIAL INTELLIGENCE</p>
+        </div>
+      </div>
+
+      <div class="system-indicator">
+        <span class="status-dot"></span>
+        ALL SYSTEMS STANDBY
+      </div>
+
+      <div class="clock">
+        <div id="clock">00:00:00</div>
+        <span id="date">INITIALIZING...</span>
+      </div>
+    </header>
+
+    <!-- MAIN LAYOUT -->
+    <section class="main-layout">
+
+      <!-- LEFT PANEL -->
+      <aside class="side-panel">
+
+        <div class="panel">
+          <div class="panel-heading">
+            <span>SYSTEM STATUS</span>
+            <span class="blue-dot"></span>
+          </div>
+
+          <div class="status-item">
+            <span>CPU LOAD</span>
+            <strong id="cpu">--%</strong>
+          </div>
+
+          <div class="progress">
+            <div id="cpu-bar" class="progress-fill"></div>
+          </div>
+
+          <div class="status-item">
+            <span>MEMORY</span>
+            <strong id="memory">--%</strong>
+          </div>
+
+          <div class="progress">
+            <div id="memory-bar" class="progress-fill red"></div>
+          </div>
+
+          <div class="status-item">
+            <span>CONNECTION</span>
+            <strong id="connection">CHECKING</strong>
+          </div>
+
+          <div class="status-item">
+            <span>BATTERY</span>
+            <strong id="battery">--</strong>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-heading">QUICK ACTIONS</div>
+
+          <button class="action-button" id="scan-btn">
+            ◈ SYSTEM SCAN
+          </button>
+
+          <button class="action-button" id="weather-btn">
+            ◉ WEATHER
+          </button>
+
+          <button class="action-button" id="clock-btn">
+            ◷ CLOCK
+          </button>
+        </div>
+
+      </aside>
+
+      <!-- CENTER AI CORE -->
+      <section class="core-section">
+
+        <div class="core-label">
+          <span class="blue-dot"></span>
+          MILES AI CORE
+        </div>
+
+        <div class="core-container" id="core">
+
+          <div class="core-ring ring-one"></div>
+          <div class="core-ring ring-two"></div>
+          <div class="core-ring ring-three"></div>
+
+          <div class="core-inner">
+            <div class="core-symbol">M</div>
+          </div>
+
+          <div class="core-orbit"></div>
+
+        </div>
+
+        <h2 id="core-status">MILES IS STANDBY</h2>
+        <p class="core-subtitle">
+          AWAITING YOUR COMMAND
+        </p>
+
+        <button class="voice-button" id="voice-btn">
+          <span>🎙</span>
+          ACTIVATE VOICE
+        </button>
+
+      </section>
+
+      <!-- RIGHT PANEL -->
+      <aside class="side-panel">
+
+        <div class="panel">
+          <div class="panel-heading">AI INFORMATION</div>
+
+          <div class="info-item">
+            <span>AI VERSION</span>
+            <strong>MM-01</strong>
+          </div>
+
+          <div class="info-item">
+            <span>PERSONALITY</span>
+            <strong>FRIENDLY</strong>
+          </div>
+
+          <div class="info-item">
+            <span>MEMORY</span>
+            <strong>INITIALIZING</strong>
+          </div>
+
+          <div class="info-item">
+            <span>VOICE MODULE</span>
+            <strong>OFFLINE</strong>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-heading">SYSTEM LOG</div>
+          <div id="system-log" class="system-log">
+            <p>> MILES INTERFACE LOADED</p>
+            <p>> WAITING FOR INITIALIZATION</p>
+            <p>> SYSTEM READY</p>
+          </div>
+        </div>
+
+      </aside>
+
+    </section>
+
+    <!-- COMMAND CENTER -->
+    <section class="command-panel">
+
+      <div class="panel-heading">
+        <span>COMMAND CENTER</span>
+        <span class="blue-dot"></span>
+      </div>
+
+      <div id="chat-output" class="chat-output">
+        <div class="message miles-message">
+          <strong>MILES:</strong>
+          Hey. Finally, someone activated me.
+          So... what are we doing today?
+        </div>
+      </div>
+
+      <form id="command-form" class="command-form">
+
+        <span class="command-prefix">></span>
+
+        <input
+          type="text"
+          id="command-input"
+          placeholder="Enter a command..."
+          autocomplete="off"
+        >
+
+        <button type="submit" id="send-btn">
+          SEND
+        </button>
+
+      </form>
+
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+      <span>MILES MORALES AI SYSTEM</span>
+      <span>PROJECT MM-01</span>
+      <span>BUILT FOR THE FUTURE</span>
+    </footer>
+
+  </main>
+
+  <script src="script.js"></script>
+
+</body>
+  </html>
+  

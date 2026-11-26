@@ -23,9 +23,11 @@
 
 body {
   background:
-    radial-gradient(ellipse at 50% 40%, #24102e 0%, transparent 55%),
-    radial-gradient(ellipse at 0% 100%, #300b20 0%, transparent 45%),
-    #08060c;
+    linear-gradient(
+      rgba(8, 6, 12, 0.25),
+      rgba(8, 6, 12, 0.45)
+    ),
+    url("miles-graffiti.png") center top / cover fixed;
   color: var(--white);
   font-family: "Courier New", monospace;
   min-height: 100vh;
@@ -40,7 +42,7 @@ body::before {
   inset: 0;
   pointer-events: none;
   z-index: -1;
-  opacity: .22;
+  opacity: .06;
   background-image:
     radial-gradient(circle, #ff174f 1px, transparent 1.5px),
     radial-gradient(circle, #8c27ff 1px, transparent 1.5px);
@@ -567,4 +569,4 @@ body::before {
   .system-indicator {
     font-size: 9px;
   }
-   }
+}

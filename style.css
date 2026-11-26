@@ -148,7 +148,8 @@ body::before {
 .brand h1 {
   font-size: 22px;
   letter-spacing: 3px;
-  text-shadow: 2px 2px 0 rgba(140, 39, 255, 0.7),
+  text-shadow:
+    2px 2px 0 rgba(140, 39, 255, 0.7),
     0 0 15px rgba(255, 23, 79, 0.4);
 }
 
@@ -331,6 +332,7 @@ body::before {
   width: 260px;
   height: 260px;
   position: relative;
+  isolation: isolate;
   display: grid;
   place-items: center;
   margin-bottom: 30px;
@@ -395,6 +397,39 @@ body::before {
   border: 1px dashed rgba(255, 23, 79, 0.4);
   border-radius: 50%;
   animation: rotate 20s linear infinite;
+}
+
+/* SPIDERWEB OVER THE AI CORE */
+
+.core-container::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+  border-radius: 50%;
+
+  background:
+    repeating-conic-gradient(
+      from 0deg,
+      transparent 0deg 14deg,
+      rgba(255, 242, 250, 0.9) 14.3deg 14.8deg,
+      transparent 15.2deg 30deg
+    ),
+    repeating-radial-gradient(
+      circle at center,
+      transparent 0 17px,
+      rgba(255, 23, 79, 0.95) 18px,
+      transparent 19px 34px,
+      rgba(196, 154, 255, 0.9) 35px,
+      transparent 36px 51px
+    );
+
+  opacity: 0.82;
+
+  filter:
+    drop-shadow(0 0 3px #ff174f)
+    drop-shadow(0 0 5px #8c27ff);
 }
 
 #core-status {
@@ -624,5 +659,5 @@ body::before {
   .system-indicator {
     font-size: 9px;
   }
-                    }
+   }
    

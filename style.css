@@ -14,6 +14,7 @@
   --purple-light: #c47aff;
   --white: #fff2fa;
   --muted: #bba5c7;
+  --cyan: #d4a2ff;
 }
 
 /* RESET */
@@ -53,7 +54,7 @@ body {
   background-attachment: fixed;
 }
 
-/* COMIC TEXTURE */
+/* COMIC BOOK TEXTURE */
 
 body::before {
   content: "";
@@ -61,7 +62,7 @@ body::before {
   inset: 0;
   z-index: -1;
   pointer-events: none;
-  opacity: 0.12;
+  opacity: 0.13;
 
   background-image:
     radial-gradient(circle, #ff174f 1px, transparent 1.7px),
@@ -76,19 +77,19 @@ body::before {
   inset: 0;
   z-index: 0;
   pointer-events: none;
-  opacity: 0.10;
+  opacity: 0.12;
 
   background:
     linear-gradient(
       45deg,
       transparent 49.5%,
-      rgba(255, 23, 79, 0.25) 50%,
+      rgba(255, 23, 79, 0.3) 50%,
       transparent 50.5%
     ),
     linear-gradient(
       -45deg,
       transparent 49.5%,
-      rgba(150, 44, 255, 0.25) 50%,
+      rgba(150, 44, 255, 0.3) 50%,
       transparent 50.5%
     );
 
@@ -100,7 +101,7 @@ body::before {
   inset: 0;
   z-index: 10;
   pointer-events: none;
-  opacity: 0.045;
+  opacity: 0.055;
 
   background: repeating-linear-gradient(
     transparent 0px,
@@ -109,7 +110,7 @@ body::before {
   );
 }
 
-/* DASHBOARD */
+/* MAIN DASHBOARD */
 
 .dashboard {
   position: relative;
@@ -136,22 +137,18 @@ body::before {
   display: flex;
   align-items: center;
   gap: 14px;
-  min-width: 0;
 }
 
 .spider-logo {
   width: 52px;
   height: 52px;
-  flex-shrink: 0;
   display: grid;
   place-items: center;
-
   border: 2px solid var(--red);
   color: var(--red);
   font-size: 26px;
   font-weight: bold;
   background: rgba(255, 23, 79, 0.1);
-
   box-shadow:
     0 0 18px rgba(255, 23, 79, 0.5),
     inset 0 0 15px rgba(255, 23, 79, 0.15);
@@ -160,8 +157,6 @@ body::before {
 .brand h1 {
   font-size: 23px;
   letter-spacing: 3px;
-  white-space: nowrap;
-
   text-shadow:
     2px 2px 0 rgba(150, 44, 255, 0.7),
     0 0 15px rgba(255, 23, 79, 0.35);
@@ -182,7 +177,6 @@ body::before {
   color: var(--purple-light);
   font-size: 11px;
   letter-spacing: 1px;
-  white-space: nowrap;
 }
 
 .status-dot,
@@ -198,7 +192,6 @@ body::before {
 }
 
 .clock {
-  flex-shrink: 0;
   text-align: right;
   color: var(--red);
   text-shadow: 0 0 15px rgba(255, 23, 79, 0.4);
@@ -275,14 +268,13 @@ body::before {
   text-shadow: 0 0 12px rgba(255, 23, 79, 0.45);
 }
 
-/* STATUS */
+/* SYSTEM STATUS */
 
 .status-item,
 .info-item {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 8px;
   margin: 17px 0 8px;
   color: var(--muted);
   font-size: 11px;
@@ -309,7 +301,7 @@ body::before {
 }
 
 .progress-fill.red {
-  background: linear-gradient(90deg, var(--red), #ff5279);
+  background: linear-gradient(90deg, var(--red), var(--red-light));
   box-shadow: 0 0 12px var(--red);
 }
 
@@ -366,7 +358,7 @@ body::before {
   margin-bottom: 30px;
 }
 
-/* ENERGY RINGS */
+/* SOFT ENERGY RINGS */
 
 .core-ring {
   position: absolute;
@@ -376,26 +368,25 @@ body::before {
 
 .ring-one {
   inset: 0;
-  border: 1px solid rgba(255, 23, 79, 0.45);
-  border-top: 3px solid var(--red);
-  border-left: 2px solid var(--red);
-  box-shadow: 0 0 20px rgba(255, 23, 79, 0.3);
-  animation: rotate 8s linear infinite;
+  border: 1px solid rgba(255, 23, 79, 0.28);
+  border-top: 2px solid rgba(255, 23, 79, 0.85);
+  border-left: 1px solid rgba(255, 23, 79, 0.55);
+  box-shadow: 0 0 14px rgba(255, 23, 79, 0.16);
+  animation: rotate 18s linear infinite;
 }
 
 .ring-two {
-  inset: 16px;
-  border: 1px solid rgba(150, 44, 255, 0.35);
-  border-right: 3px solid var(--purple);
-  border-bottom: 2px solid var(--purple);
-  box-shadow: 0 0 20px rgba(150, 44, 255, 0.35);
-  animation: rotate 12s linear infinite reverse;
+  inset: 17px;
+  border: 1px solid rgba(150, 44, 255, 0.25);
+  border-right: 2px solid rgba(150, 44, 255, 0.7);
+  border-bottom: 1px solid rgba(150, 44, 255, 0.5);
+  animation: rotate 25s linear infinite reverse;
 }
 
 .ring-three {
-  inset: 32px;
-  border: 1px dashed rgba(255, 82, 121, 0.35);
-  animation: rotate 18s linear infinite;
+  inset: 34px;
+  border: 1px dashed rgba(255, 82, 121, 0.24);
+  animation: rotate 35s linear infinite;
 }
 
 /* GLOWING CORE */
@@ -403,10 +394,8 @@ body::before {
 .core-inner {
   position: relative;
   z-index: 3;
-  isolation: isolate;
   display: grid;
   place-items: center;
-
   width: 165px;
   height: 165px;
   border-radius: 50%;
@@ -428,20 +417,45 @@ body::before {
     0 0 55px rgba(150, 44, 255, 0.55),
     inset 0 0 30px rgba(255, 23, 79, 0.65);
 
-  animation: corePulse 3s ease-in-out infinite;
+  animation: corePulse 4s ease-in-out infinite;
 }
 
-/* REAL SPIDERWEB — INSIDE THE CORE */
+/* CENTRAL SPIDER */
 
-.core-inner::before {
-  content: "";
+.core-symbol {
+  position: relative;
+  z-index: 6;
+  display: grid;
+  place-items: center;
+  width: 125px;
+  height: 135px;
+  color: var(--red);
+
+  filter:
+    drop-shadow(0 0 7px #ff174f)
+    drop-shadow(0 0 16px #ff174f)
+    drop-shadow(0 0 25px #962cff);
+}
+
+.core-symbol svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+/* ==========================================
+   SPIDERWEB
+   THE WEB SURROUNDS THE SPIDER
+========================================== */
+
+.core-web {
   position: absolute;
-  z-index: 1;
-  inset: -3px;
+  z-index: 4;
+  inset: 0;
   border-radius: 50%;
   pointer-events: none;
 
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Cg fill='none' stroke='%23fff0ff' stroke-width='1.1' stroke-linecap='round' opacity='.8'%3E%3Cpath d='M100 100 Q82 68 94 4 M100 100 Q121 65 161 12 M100 100 Q143 90 196 53 M100 100 Q148 124 193 165 M100 100 Q120 145 160 196 M100 100 Q84 148 101 198 M100 100 Q63 139 38 190 M100 100 Q54 122 5 157 M100 100 Q54 86 4 52 M100 100 Q76 57 42 9'/%3E%3Cpath d='M94 4 Q123 22 161 12 M161 12 Q171 34 196 53 M196 53 Q171 84 193 165 M193 165 Q164 172 160 196 M160 196 Q124 179 101 198 M101 198 Q65 175 38 190 M38 190 Q23 163 5 157 M5 157 Q25 103 4 52 M4 52 Q25 31 42 9 M42 9 Q69 24 94 4'/%3E%3Cpath d='M100 23 Q122 37 140 29 Q157 46 171 70 Q151 87 178 100 Q151 115 171 132 Q153 154 140 171 Q119 160 101 179 Q82 157 63 171 Q45 151 29 132 Q49 115 22 100 Q49 86 29 70 Q45 46 63 29 Q82 39 100 23Z'/%3E%3Cpath d='M100 49 Q116 61 132 55 Q144 70 151 85 Q137 99 158 100 Q137 111 151 119 Q139 138 132 145 Q116 139 101 157 Q84 138 69 145 Q60 131 49 119 Q63 109 42 100 Q63 88 49 85 Q60 68 69 55 Q85 62 100 49Z'/%3E%3Cpath d='M100 74 Q111 83 122 79 Q130 88 137 97 Q125 101 137 104 Q127 116 122 122 Q111 117 101 135 Q89 117 78 122 Q72 112 63 104 Q76 100 63 97 Q72 88 78 79 Q89 84 100 74Z'/%3E%3C/g%3E%3Cg fill='none' stroke='%23ff5279' stroke-width='.8' opacity='.8'%3E%3Cpath d='M100 100 Q69 62 24 28 M100 100 Q137 62 181 26 M100 100 Q163 100 198 100 M100 100 Q151 143 180 180 M100 100 Q100 157 100 199 M100 100 Q57 148 21 180 M100 100 Q39 100 2 100 M100 100 Q61 57 21 20'/%3E%3C/g%3E%3Cg fill='%23ffffff'%3E%3Ccircle cx='94' cy='4' r='1.5'/%3E%3Ccircle cx='161' cy='12' r='1.5'/%3E%3Ccircle cx='196' cy='53' r='1.5'/%3E%3Ccircle cx='193' cy='165' r='1.5'/%3E%3Ccircle cx='160' cy='196' r='1.5'/%3E%3Ccircle cx='101' cy='198' r='1.5'/%3E%3Ccircle cx='38' cy='190' r='1.5'/%3E%3Ccircle cx='5' cy='157' r='1.5'/%3E%3Ccircle cx='4' cy='52' r='1.5'/%3E%3Ccircle cx='42' cy='9' r='1.5'/%3E%3C/g%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 300'%3E%3Cg fill='none' stroke='%23f9dfff' stroke-width='1.1' stroke-linecap='round' opacity='.86'%3E%3Cpath d='M150 150 Q137 111 150 12 M150 150 Q178 111 222 24 M150 150 Q213 142 286 86 M150 150 Q211 181 280 218 M150 150 Q180 218 226 286 M150 150 Q137 221 150 290 M150 150 Q91 217 62 280 M150 150 Q81 181 15 218 M150 150 Q78 141 14 86 M150 150 Q103 85 76 22'/%3E%3Cpath d='M150 12 Q186 35 222 24 M222 24 Q240 58 286 86 M286 86 Q253 119 280 218 M280 218 Q244 243 226 286 M226 286 Q181 269 150 290 M150 290 Q103 267 62 280 M62 280 Q45 242 15 218 M15 218 Q44 178 14 86 M14 86 Q50 56 76 22 M76 22 Q117 35 150 12'/%3E%3Cpath d='M150 12 Q112 55 76 22 M222 24 Q185 66 150 12 M286 86 Q230 92 222 24 M280 218 Q228 188 286 86 M226 286 Q191 229 280 218 M150 290 Q170 234 226 286 M62 280 Q105 230 150 290 M15 218 Q75 190 62 280 M14 86 Q73 99 15 218 M76 22 Q91 77 14 86'/%3E%3Cpath d='M150 45 Q171 72 193 53 Q219 71 239 105 Q216 130 252 150 Q218 172 239 199 Q210 224 193 247 Q164 225 150 260 Q127 226 107 247 Q84 219 61 199 Q85 174 48 150 Q84 126 61 105 Q87 77 107 53 Q132 72 150 45Z'/%3E%3Cpath d='M150 76 Q171 91 188 81 Q202 99 213 120 Q195 137 222 150 Q195 166 213 180 Q200 201 188 219 Q169 207 150 232 Q132 207 112 219 Q100 200 87 180 Q105 164 78 150 Q105 135 87 120 Q100 99 112 81 Q132 91 150 76Z'/%3E%3Cpath d='M150 104 Q165 117 179 111 Q188 127 197 139 Q183 149 197 162 Q185 177 179 190 Q164 184 150 202 Q135 184 121 190 Q112 175 103 162 Q117 149 103 139 Q115 125 121 111 Q135 117 150 104Z'/%3E%3C/g%3E%3Cg fill='none' stroke='%23ff174f' stroke-width='.85' opacity='.75'%3E%3Cpath d='M150 150 Q112 100 42 54 M150 150 Q192 91 264 52 M150 150 Q230 150 290 150 M150 150 Q216 209 267 263 M150 150 Q150 226 150 294 M150 150 Q85 213 33 264 M150 150 Q68 150 10 150 M150 150 Q83 89 33 34'/%3E%3Cpath d='M42 54 Q100 60 150 45 Q208 59 264 52 M10 150 Q62 111 87 120 M290 150 Q236 187 213 180 M33 264 Q91 236 112 219 M267 263 Q210 235 188 219'/%3E%3C/g%3E%3C/svg%3E");
 
   background-size: 100% 100%;
   background-position: center;
@@ -449,37 +463,29 @@ body::before {
 
   filter:
     drop-shadow(0 0 3px rgba(255, 242, 250, 0.8))
-    drop-shadow(0 0 6px rgba(255, 23, 79, 0.7));
+    drop-shadow(0 0 7px rgba(255, 23, 79, 0.55))
+    drop-shadow(0 0 12px rgba(150, 44, 255, 0.4));
 
   opacity: 0.78;
+
+  /* Keep the centre clear so the spider is visible */
+  -webkit-mask-image: radial-gradient(
+    circle,
+    transparent 0%,
+    transparent 25%,
+    rgba(0, 0, 0, 0.55) 32%,
+    black 43%
+  );
+
+  mask-image: radial-gradient(
+    circle,
+    transparent 0%,
+    transparent 25%,
+    rgba(0, 0, 0, 0.55) 32%,
+    black 43%
+  );
+
   animation: webShimmer 5s ease-in-out infinite alternate;
-}
-
-/* SPIDER EMBLEM */
-
-.core-symbol {
-  position: relative;
-  z-index: 2;
-
-  display: block;
-  width: 88px;
-  height: 88px;
-
-  font-size: 0;
-  color: transparent;
-
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'%3E%3Cg fill='%23ff174f' stroke='%23ffb0c5' stroke-width='1.2' stroke-linejoin='round'%3E%3Cellipse cx='60' cy='59' rx='14' ry='22'/%3E%3Cellipse cx='60' cy='35' rx='10' ry='9'/%3E%3Cpath d='M48 43 Q30 31 17 17 L12 23 Q24 43 43 53 L48 59 Q27 52 11 54 L8 62 Q27 66 46 68 L49 72 Q30 80 18 97 L25 102 Q43 87 55 77 M72 43 Q90 31 103 17 L108 23 Q96 43 77 53 L72 59 Q93 52 109 54 L112 62 Q93 66 74 68 L71 72 Q90 80 102 97 L95 102 Q77 87 65 77'/%3E%3C/g%3E%3C/svg%3E");
-
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: center;
-
-  filter:
-    drop-shadow(0 0 5px #ff174f)
-    drop-shadow(0 0 12px #ff174f)
-    drop-shadow(0 0 22px #962cff);
-
-  animation: spiderPulse 3s ease-in-out infinite;
 }
 
 /* ORBIT */
@@ -488,13 +494,13 @@ body::before {
   position: absolute;
   z-index: 5;
   inset: -12px;
-  border: 1px dashed rgba(255, 23, 79, 0.35);
+  border: 1px dashed rgba(255, 23, 79, 0.25);
   border-radius: 50%;
   pointer-events: none;
-  animation: rotate 22s linear infinite;
+  animation: rotate 35s linear infinite;
 }
 
-/* CORE TEXT */
+/* CORE STATUS */
 
 #core-status {
   color: var(--red);
@@ -682,19 +688,10 @@ body::before {
 
 @keyframes webShimmer {
   from {
-    opacity: 0.68;
+    opacity: 0.65;
   }
   to {
     opacity: 0.95;
-  }
-}
-
-@keyframes spiderPulse {
-  0%, 100% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.09);
   }
 }
 
@@ -705,30 +702,8 @@ body::before {
     background-attachment: scroll;
   }
 
-  .dashboard {
-    padding: 20px;
-  }
-
-  .topbar {
-    display: grid;
-    grid-template-columns: 1fr auto;
-    gap: 15px;
-  }
-
-  .system-indicator {
-    grid-column: 1;
-    grid-row: 2;
-  }
-
-  .clock {
-    grid-column: 2;
-    grid-row: 1 / 3;
-    align-self: center;
-  }
-
   .main-layout {
     grid-template-columns: 1fr 1fr;
-    gap: 18px;
   }
 
   .core-section {
@@ -741,9 +716,8 @@ body::before {
     grid-row: 2;
   }
 
-  .core-container {
-    width: 270px;
-    height: 270px;
+  .topbar {
+    flex-wrap: wrap;
   }
 }
 
@@ -752,35 +726,6 @@ body::before {
 @media (max-width: 550px) {
   .dashboard {
     padding: 15px;
-  }
-
-  .topbar {
-    grid-template-columns: 1fr;
-    gap: 12px;
-  }
-
-  .brand h1 {
-    font-size: 19px;
-  }
-
-  .brand p {
-    font-size: 8px;
-  }
-
-  .system-indicator {
-    grid-column: 1;
-    grid-row: auto;
-    font-size: 9px;
-  }
-
-  .clock {
-    grid-column: 1;
-    grid-row: auto;
-    text-align: left;
-  }
-
-  #clock {
-    font-size: 19px;
   }
 
   .main-layout {
@@ -803,17 +748,29 @@ body::before {
   }
 
   .core-inner {
-    width: 145px;
-    height: 145px;
+    width: 140px;
+    height: 140px;
   }
 
   .core-symbol {
-    width: 78px;
-    height: 78px;
+    width: 108px;
+    height: 118px;
   }
 
   .footer {
     flex-direction: column;
+  }
+
+  .system-indicator {
+    font-size: 9px;
+  }
+
+  .brand h1 {
+    font-size: 19px;
+  }
+
+  #clock {
+    font-size: 19px;
   }
 
   .command-panel {
@@ -821,7 +778,7 @@ body::before {
   }
 }
 
-/* REDUCED MOTION */
+/* REDUCE MOTION */
 
 @media (prefers-reduced-motion: reduce) {
   *,
@@ -831,4 +788,5 @@ body::before {
     animation-iteration-count: 1 !important;
     scroll-behavior: auto !important;
   }
-}
+   }
+       

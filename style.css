@@ -1,19 +1,23 @@
 
-/* =====================================
+/* ==========================================
    MILES MORALES — SPIDER-VERSE EDITION
    PROJECT MM-01
-===================================== */
+   VISUAL UPGRADE // VERSION 2.0
+========================================== */
 
 :root {
-  --background: #08060c;
-  --panel: rgba(13, 8, 19, 0.88);
-  --blue: #713cff;
-  --cyan: #c49aff;
+  --background: #08050d;
+  --panel: rgba(12, 6, 19, 0.94);
   --red: #ff174f;
+  --red-light: #ff5279;
+  --purple: #962cff;
+  --purple-light: #c47aff;
   --white: #fff2fa;
-  --muted: #b5a0bd;
-  --purple: #8c27ff;
+  --muted: #bba5c7;
+  --cyan: #d4a2ff;
 }
+
+/* RESET */
 
 * {
   margin: 0;
@@ -22,82 +26,87 @@
 }
 
 html {
-  background: #08060c;
+  background: var(--background);
+  scroll-behavior: smooth;
 }
 
 body {
   position: relative;
   isolation: isolate;
-  background-color: #08060c;
+  min-height: 100vh;
+  overflow-x: hidden;
+  color: var(--white);
+  font-family: "Courier New", monospace;
+
+  background-color: var(--background);
   background-image:
     linear-gradient(
       180deg,
-      rgba(8, 6, 12, 0.12) 0%,
-      rgba(8, 6, 12, 0.28) 45%,
-      rgba(8, 6, 12, 0.68) 100%
+      rgba(8, 5, 13, 0.12),
+      rgba(8, 5, 13, 0.38) 55%,
+      rgba(8, 5, 13, 0.78)
     ),
     url("./miles-graffiti.png");
+
   background-position: center top;
   background-size: cover;
   background-repeat: no-repeat;
   background-attachment: fixed;
-  color: var(--white);
-  font-family: "Courier New", monospace;
-  min-height: 100vh;
-  overflow-x: hidden;
 }
 
-/* COMIC BOOK HALFTONE */
+/* COMIC BOOK TEXTURE */
 
 body::before {
   content: "";
   position: fixed;
   inset: 0;
-  pointer-events: none;
   z-index: -1;
-  opacity: 0.10;
+  pointer-events: none;
+  opacity: 0.13;
+
   background-image:
-    radial-gradient(circle, #ff174f 1px, transparent 1.6px),
-    radial-gradient(circle, #a34cff 1px, transparent 1.6px);
+    radial-gradient(circle, #ff174f 1px, transparent 1.7px),
+    radial-gradient(circle, #a34cff 1px, transparent 1.7px);
+
   background-size: 23px 23px, 35px 35px;
   background-position: 0 0, 12px 12px;
 }
 
-/* SUBTLE COMIC GRID */
-
 .background-grid {
   position: fixed;
   inset: 0;
-  z-index: -1;
+  z-index: 0;
   pointer-events: none;
-  opacity: 0.16;
+  opacity: 0.12;
+
   background:
     linear-gradient(
       45deg,
       transparent 49.5%,
-      rgba(255, 23, 79, 0.22) 50%,
+      rgba(255, 23, 79, 0.3) 50%,
       transparent 50.5%
     ),
     linear-gradient(
       -45deg,
       transparent 49.5%,
-      rgba(140, 39, 255, 0.20) 50%,
+      rgba(150, 44, 255, 0.3) 50%,
       transparent 50.5%
     );
-  background-size: 90px 90px;
-  mask-image: linear-gradient(to bottom, black, transparent);
+
+  background-size: 100px 100px;
 }
 
 .scanline {
   position: fixed;
   inset: 0;
-  pointer-events: none;
   z-index: 10;
-  opacity: 0.07;
+  pointer-events: none;
+  opacity: 0.055;
+
   background: repeating-linear-gradient(
     transparent 0px,
     transparent 3px,
-    rgba(255, 23, 79, 0.2) 4px
+    rgba(255, 23, 79, 0.25) 4px
   );
 }
 
@@ -107,9 +116,9 @@ body::before {
   position: relative;
   z-index: 1;
   width: min(1500px, 100%);
+  min-height: 100vh;
   margin: auto;
   padding: 25px;
-  min-height: 100vh;
 }
 
 /* HEADER */
@@ -119,38 +128,45 @@ body::before {
   align-items: center;
   justify-content: space-between;
   gap: 20px;
+
   padding-bottom: 22px;
   border-bottom: 1px solid rgba(255, 23, 79, 0.65);
+
   box-shadow: 0 8px 25px -20px var(--red);
 }
 
 .brand {
   display: flex;
   align-items: center;
-  gap: 13px;
+  gap: 14px;
 }
 
 .spider-logo {
-  width: 48px;
-  height: 48px;
+  width: 52px;
+  height: 52px;
+
   display: grid;
   place-items: center;
+
   border: 2px solid var(--red);
   color: var(--red);
   font-size: 26px;
   font-weight: bold;
-  background: rgba(255, 23, 79, 0.12);
+
+  background: rgba(255, 23, 79, 0.1);
+
   box-shadow:
-    0 0 18px rgba(255, 23, 79, 0.55),
+    0 0 18px rgba(255, 23, 79, 0.5),
     inset 0 0 15px rgba(255, 23, 79, 0.15);
 }
 
 .brand h1 {
-  font-size: 22px;
+  font-size: 23px;
   letter-spacing: 3px;
+
   text-shadow:
-    2px 2px 0 rgba(140, 39, 255, 0.7),
-    0 0 15px rgba(255, 23, 79, 0.4);
+    2px 2px 0 rgba(150, 44, 255, 0.7),
+    0 0 15px rgba(255, 23, 79, 0.35);
 }
 
 .brand h1 span {
@@ -158,14 +174,14 @@ body::before {
 }
 
 .brand p {
+  margin-top: 5px;
   color: var(--muted);
   font-size: 9px;
   letter-spacing: 2px;
-  margin-top: 5px;
 }
 
 .system-indicator {
-  color: var(--cyan);
+  color: var(--purple-light);
   font-size: 11px;
   letter-spacing: 1px;
 }
@@ -173,18 +189,21 @@ body::before {
 .status-dot,
 .blue-dot {
   display: inline-block;
-  width: 7px;
-  height: 7px;
+  width: 8px;
+  height: 8px;
+  margin-right: 6px;
+
   border-radius: 50%;
   background: var(--red);
+
   box-shadow: 0 0 12px var(--red);
-  margin-right: 6px;
   animation: pulse 1.5s infinite;
 }
 
 .clock {
   text-align: right;
   color: var(--red);
+
   text-shadow: 0 0 15px rgba(255, 23, 79, 0.4);
 }
 
@@ -194,8 +213,8 @@ body::before {
 }
 
 #date {
-  font-size: 10px;
   color: var(--muted);
+  font-size: 10px;
 }
 
 /* MAIN LAYOUT */
@@ -214,40 +233,53 @@ body::before {
   gap: 20px;
 }
 
-/* GLASS / COMIC PANELS */
+/* COMIC BOOK PANELS */
 
 .panel {
+  position: relative;
+  overflow: hidden;
+
+  padding: 20px;
+
   background:
     linear-gradient(
       135deg,
-      rgba(255, 23, 79, 0.09),
+      rgba(255, 23, 79, 0.1),
       transparent 45%
     ),
     var(--panel);
-  border: 1px solid rgba(140, 39, 255, 0.48);
+
+  border: 1px solid rgba(150, 44, 255, 0.65);
   border-left: 3px solid var(--red);
   border-radius: 5px;
-  padding: 20px;
+
   box-shadow:
-    0 0 22px rgba(140, 39, 255, 0.12),
-    inset 0 0 25px rgba(255, 23, 79, 0.04);
+    0 0 22px rgba(150, 44, 255, 0.15),
+    inset 0 0 25px rgba(255, 23, 79, 0.045);
+
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
+
   transition: border-color 0.3s, box-shadow 0.3s;
 }
 
 .panel:hover {
-  border-color: rgba(255, 23, 79, 0.85);
-  box-shadow: 0 0 25px rgba(255, 23, 79, 0.16);
+  border-color: var(--red);
+
+  box-shadow:
+    0 0 25px rgba(255, 23, 79, 0.2),
+    inset 0 0 20px rgba(150, 44, 255, 0.08);
 }
 
 .panel-heading {
+  margin-bottom: 20px;
+
   color: var(--red);
   font-size: 12px;
-  letter-spacing: 2px;
-  margin-bottom: 20px;
   font-weight: bold;
-  text-shadow: 0 0 12px rgba(255, 23, 79, 0.4);
+  letter-spacing: 2px;
+
+  text-shadow: 0 0 12px rgba(255, 23, 79, 0.45);
 }
 
 /* SYSTEM STATUS */
@@ -257,192 +289,275 @@ body::before {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 11px;
+
   margin: 17px 0 8px;
+
   color: var(--muted);
+  font-size: 11px;
 }
 
 .status-item strong,
 .info-item strong {
-  color: var(--cyan);
+  color: var(--purple-light);
 }
 
 .progress {
-  height: 5px;
-  background: #24172d;
-  border-radius: 10px;
+  height: 6px;
   overflow: hidden;
+
+  background: #24152e;
+  border-radius: 10px;
 }
 
 .progress-fill {
   height: 100%;
   width: 45%;
-  background: linear-gradient(90deg, var(--red), var(--purple));
+
+  background: linear-gradient(
+    90deg,
+    var(--red),
+    var(--purple)
+  );
+
   box-shadow: 0 0 12px var(--red);
   transition: width 0.5s;
 }
 
 .progress-fill.red {
-  background: var(--red);
+  background: linear-gradient(
+    90deg,
+    var(--red),
+    #ff5279
+  );
+
   box-shadow: 0 0 12px var(--red);
 }
 
-/* ACTION BUTTONS */
+/* QUICK ACTIONS */
 
 .action-button {
   width: 100%;
   padding: 12px;
   margin-bottom: 9px;
-  background: rgba(140, 39, 255, 0.13);
+
   color: var(--white);
-  border: 1px solid rgba(140, 39, 255, 0.6);
+  background: rgba(150, 44, 255, 0.12);
+
+  border: 1px solid rgba(150, 44, 255, 0.65);
   border-radius: 3px;
+
   font-family: inherit;
   font-size: 11px;
   cursor: pointer;
+
   transition: 0.3s;
 }
 
 .action-button:hover {
-  background: var(--red);
   color: white;
+  background: var(--red);
   border-color: var(--red);
+
   box-shadow: 0 0 20px rgba(255, 23, 79, 0.5);
   transform: translateX(3px);
 }
 
-/* AI CORE */
+/* ==========================================
+   MILES AI CORE
+========================================== */
 
 .core-section {
-  text-align: center;
   display: flex;
   flex-direction: column;
   align-items: center;
+  text-align: center;
 }
 
 .core-label {
+  margin-bottom: 35px;
+
   color: var(--red);
   font-size: 12px;
   letter-spacing: 3px;
-  margin-bottom: 35px;
+
   text-shadow: 0 0 12px var(--red);
 }
 
+/* CORE CONTAINER */
+
 .core-container {
-  width: 260px;
-  height: 260px;
   position: relative;
   isolation: isolate;
+
   display: grid;
   place-items: center;
+
+  width: 290px;
+  height: 290px;
   margin-bottom: 30px;
 }
+
+/* ROTATING ENERGY RINGS */
 
 .core-ring {
   position: absolute;
   border-radius: 50%;
-  border: 1px solid var(--purple);
-  box-shadow: 0 0 20px rgba(140, 39, 255, 0.35);
+  pointer-events: none;
 }
 
 .ring-one {
   inset: 0;
+
+  border: 1px solid rgba(255, 23, 79, 0.45);
   border-top: 3px solid var(--red);
   border-left: 2px solid var(--red);
+
+  box-shadow: 0 0 20px rgba(255, 23, 79, 0.3);
+
   animation: rotate 8s linear infinite;
 }
 
 .ring-two {
-  inset: 18px;
+  inset: 16px;
+
+  border: 1px solid rgba(150, 44, 255, 0.35);
   border-right: 3px solid var(--purple);
   border-bottom: 2px solid var(--purple);
+
+  box-shadow: 0 0 20px rgba(150, 44, 255, 0.35);
+
   animation: rotate 12s linear infinite reverse;
 }
 
 .ring-three {
-  inset: 37px;
-  border-bottom: 2px solid var(--red);
-  animation: rotate 5s linear infinite;
+  inset: 32px;
+
+  border: 1px dashed rgba(255, 82, 121, 0.45);
+
+  animation: rotate 18s linear infinite;
 }
+
+/* GLOWING CORE */
 
 .core-inner {
-  width: 140px;
-  height: 140px;
-  border-radius: 50%;
+  position: relative;
+  z-index: 3;
+
   display: grid;
   place-items: center;
+
+  width: 165px;
+  height: 165px;
+
+  border-radius: 50%;
+
   background:
-    radial-gradient(circle, #7a153d 0%, #310c35 45%, #09060f 80%);
+    radial-gradient(
+      circle at 50% 45%,
+      #ff285f 0%,
+      #9e1249 22%,
+      #48102f 48%,
+      #16091d 78%,
+      #09060f 100%
+    );
+
   border: 2px solid var(--red);
+
   box-shadow:
-    0 0 25px var(--red),
-    0 0 55px rgba(140, 39, 255, 0.45),
-    inset 0 0 30px rgba(255, 23, 79, 0.55);
-  animation: corePulse 3s infinite;
+    0 0 25px rgba(255, 23, 79, 0.9),
+    0 0 55px rgba(150, 44, 255, 0.55),
+    inset 0 0 30px rgba(255, 23, 79, 0.65);
+
+  animation: corePulse 3s ease-in-out infinite;
 }
 
+/* CENTRAL SPIDER EMBLEM */
+
 .core-symbol {
-  color: white;
-  font-size: 60px;
-  font-weight: bold;
-  text-shadow:
-    0 0 15px var(--red),
-    0 0 30px var(--purple);
+  position: relative;
+  z-index: 6;
+
+  display: grid;
+  place-items: center;
+
+  width: 125px;
+  height: 135px;
+
+  color: #ff174f;
+
+  filter:
+    drop-shadow(0 0 7px #ff174f)
+    drop-shadow(0 0 16px #ff174f)
+    drop-shadow(0 0 25px #962cff);
 }
+
+.core-symbol svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+/* ==========================================
+   REALISTIC SPIDERWEB OVERLAY
+   SVG SILK STRANDS — NOT GEOMETRIC GRADIENTS
+========================================== */
+
+.core-web {
+  position: absolute;
+  z-index: 4;
+
+  inset: -5px;
+
+  border-radius: 50%;
+  pointer-events: none;
+
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 300'%3E%3Cg fill='none' stroke='%23f9dfff' stroke-width='1.1' stroke-linecap='round' opacity='.86'%3E%3Cpath d='M150 150 Q137 111 150 12 M150 150 Q178 111 222 24 M150 150 Q213 142 286 86 M150 150 Q211 181 280 218 M150 150 Q180 218 226 286 M150 150 Q137 221 150 290 M150 150 Q91 217 62 280 M150 150 Q81 181 15 218 M150 150 Q78 141 14 86 M150 150 Q103 85 76 22'/%3E%3Cpath d='M150 12 Q186 35 222 24 M222 24 Q240 58 286 86 M286 86 Q253 119 280 218 M280 218 Q244 243 226 286 M226 286 Q181 269 150 290 M150 290 Q103 267 62 280 M62 280 Q45 242 15 218 M15 218 Q44 178 14 86 M14 86 Q50 56 76 22 M76 22 Q117 35 150 12'/%3E%3Cpath d='M150 12 Q112 55 76 22 M222 24 Q185 66 150 12 M286 86 Q230 92 222 24 M280 218 Q228 188 286 86 M226 286 Q191 229 280 218 M150 290 Q170 234 226 286 M62 280 Q105 230 150 290 M15 218 Q75 190 62 280 M14 86 Q73 99 15 218 M76 22 Q91 77 14 86'/%3E%3Cpath d='M150 45 Q171 72 193 53 Q219 71 239 105 Q216 130 252 150 Q218 172 239 199 Q210 224 193 247 Q164 225 150 260 Q127 226 107 247 Q84 219 61 199 Q85 174 48 150 Q84 126 61 105 Q87 77 107 53 Q132 72 150 45Z'/%3E%3Cpath d='M150 76 Q171 91 188 81 Q202 99 213 120 Q195 137 222 150 Q195 166 213 180 Q200 201 188 219 Q169 207 150 232 Q132 207 112 219 Q100 200 87 180 Q105 164 78 150 Q105 135 87 120 Q100 99 112 81 Q132 91 150 76Z'/%3E%3Cpath d='M150 104 Q165 117 179 111 Q188 127 197 139 Q183 149 197 162 Q185 177 179 190 Q164 184 150 202 Q135 184 121 190 Q112 175 103 162 Q117 149 103 139 Q115 125 121 111 Q135 117 150 104Z'/%3E%3C/g%3E%3Cg fill='none' stroke='%23ff174f' stroke-width='.85' opacity='.75'%3E%3Cpath d='M150 150 Q112 100 42 54 M150 150 Q192 91 264 52 M150 150 Q230 150 290 150 M150 150 Q216 209 267 263 M150 150 Q150 226 150 294 M150 150 Q85 213 33 264 M150 150 Q68 150 10 150 M150 150 Q83 89 33 34'/%3E%3Cpath d='M42 54 Q100 60 150 45 Q208 59 264 52 M10 150 Q62 111 87 120 M290 150 Q236 187 213 180 M33 264 Q91 236 112 219 M267 263 Q210 235 188 219'/%3E%3C/g%3E%3Cg fill='%23ffffff'%3E%3Ccircle cx='150' cy='12' r='1.8'/%3E%3Ccircle cx='222' cy='24' r='1.5'/%3E%3Ccircle cx='286' cy='86' r='1.8'/%3E%3Ccircle cx='280' cy='218' r='1.5'/%3E%3Ccircle cx='226' cy='286' r='1.8'/%3E%3Ccircle cx='150' cy='290' r='1.5'/%3E%3Ccircle cx='62' cy='280' r='1.8'/%3E%3Ccircle cx='15' cy='218' r='1.5'/%3E%3Ccircle cx='14' cy='86' r='1.8'/%3E%3Ccircle cx='76' cy='22' r='1.5'/%3E%3C/g%3E%3C/svg%3E");
+
+  background-size: 100% 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  filter:
+    drop-shadow(0 0 2px rgba(255, 242, 250, 0.9))
+    drop-shadow(0 0 5px rgba(255, 23, 79, 0.65))
+    drop-shadow(0 0 8px rgba(150, 44, 255, 0.5));
+
+  opacity: 0.94;
+
+  animation: webShimmer 5s ease-in-out infinite alternate;
+}
+
+/* ORBIT */
 
 .core-orbit {
   position: absolute;
-  width: 100%;
-  height: 100%;
-  border: 1px dashed rgba(255, 23, 79, 0.4);
-  border-radius: 50%;
-  animation: rotate 20s linear infinite;
-}
-
-/* SPIDERWEB OVER THE AI CORE */
-
-.core-container::after {
-  content: "";
-  position: absolute;
-  inset: 0;
   z-index: 5;
-  pointer-events: none;
+
+  inset: -12px;
+
+  border: 1px dashed rgba(255, 23, 79, 0.35);
   border-radius: 50%;
 
-  background:
-    repeating-conic-gradient(
-      from 0deg,
-      transparent 0deg 14deg,
-      rgba(255, 242, 250, 0.9) 14.3deg 14.8deg,
-      transparent 15.2deg 30deg
-    ),
-    repeating-radial-gradient(
-      circle at center,
-      transparent 0 17px,
-      rgba(255, 23, 79, 0.95) 18px,
-      transparent 19px 34px,
-      rgba(196, 154, 255, 0.9) 35px,
-      transparent 36px 51px
-    );
+  pointer-events: none;
 
-  opacity: 0.82;
-
-  filter:
-    drop-shadow(0 0 3px #ff174f)
-    drop-shadow(0 0 5px #8c27ff);
+  animation: rotate 22s linear infinite;
 }
+
+/* CORE STATUS */
 
 #core-status {
   color: var(--red);
   font-size: 17px;
   letter-spacing: 2px;
-  text-shadow: 0 0 12px rgba(255, 23, 79, 0.5);
+
+  text-shadow: 0 0 12px rgba(255, 23, 79, 0.55);
 }
 
 .core-subtitle {
+  margin-top: 9px;
+
   color: var(--muted);
   font-size: 10px;
-  margin-top: 9px;
   letter-spacing: 2px;
 }
 
@@ -451,20 +566,28 @@ body::before {
 .voice-button {
   margin-top: 25px;
   padding: 15px 30px;
+
+  color: white;
+  background: rgba(255, 23, 79, 0.13);
+
   border: 1px solid var(--red);
   border-radius: 30px;
-  color: white;
-  background: rgba(255, 23, 79, 0.15);
+
   font-family: inherit;
   letter-spacing: 2px;
   cursor: pointer;
-  box-shadow: 0 0 18px rgba(255, 23, 79, 0.25);
+
+  box-shadow: 0 0 18px rgba(255, 23, 79, 0.3);
+
   transition: 0.3s;
 }
 
 .voice-button:hover {
   background: var(--red);
-  box-shadow: 0 0 25px var(--red);
+
+  box-shadow:
+    0 0 20px var(--red),
+    0 0 35px rgba(150, 44, 255, 0.5);
 }
 
 .voice-button span {
@@ -486,15 +609,21 @@ body::before {
   background:
     linear-gradient(
       120deg,
-      rgba(255, 23, 79, 0.09),
+      rgba(255, 23, 79, 0.1),
       transparent
     ),
     var(--panel);
-  border: 1px solid rgba(255, 23, 79, 0.5);
+
+  border: 1px solid rgba(255, 23, 79, 0.6);
   border-left: 3px solid var(--red);
-  padding: 20px;
   border-radius: 5px;
-  box-shadow: 0 0 25px rgba(255, 23, 79, 0.1);
+
+  padding: 20px;
+
+  box-shadow:
+    0 0 25px rgba(255, 23, 79, 0.13),
+    inset 0 0 25px rgba(150, 44, 255, 0.05);
+
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
 }
@@ -502,28 +631,32 @@ body::before {
 .chat-output {
   height: 130px;
   overflow-y: auto;
-  font-size: 12px;
-  color: var(--muted);
+
   margin-bottom: 15px;
+
+  color: var(--muted);
+  font-size: 12px;
   line-height: 1.8;
 }
 
 .miles-message {
-  color: var(--cyan);
+  color: var(--purple-light);
 }
 
 .user-message {
-  color: var(--white);
   margin-top: 10px;
+  color: var(--white);
 }
 
 .command-form {
   display: flex;
   align-items: center;
   gap: 12px;
-  border: 1px solid rgba(140, 39, 255, 0.6);
+
   padding: 8px 12px;
-  background: rgba(9, 6, 14, 0.95);
+
+  border: 1px solid rgba(150, 44, 255, 0.7);
+  background: rgba(9, 6, 14, 0.96);
 }
 
 .command-prefix {
@@ -534,27 +667,35 @@ body::before {
 .command-form input {
   flex: 1;
   min-width: 0;
+
   border: none;
   outline: none;
+
   background: transparent;
   color: white;
+
   font-family: inherit;
   font-size: 13px;
 }
 
 .command-form button {
-  background: var(--red);
-  color: white;
-  border: none;
   padding: 10px 18px;
-  cursor: pointer;
+
+  color: white;
+  background: var(--red);
+
+  border: none;
+
   font-family: inherit;
   font-weight: bold;
+  cursor: pointer;
+
   transition: 0.3s;
 }
 
 .command-form button:hover {
   background: var(--purple);
+
   box-shadow: 0 0 15px var(--purple);
 }
 
@@ -564,20 +705,26 @@ body::before {
   display: flex;
   justify-content: space-between;
   gap: 10px;
+
   padding-top: 22px;
   margin-top: 25px;
-  border-top: 1px solid rgba(255, 23, 79, 0.3);
+
+  border-top: 1px solid rgba(255, 23, 79, 0.4);
+
   color: var(--muted);
   font-size: 9px;
   letter-spacing: 1px;
 }
 
-/* ANIMATIONS */
+/* ==========================================
+   ANIMATIONS
+========================================== */
 
 @keyframes rotate {
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }
@@ -587,6 +734,7 @@ body::before {
   0%, 100% {
     opacity: 1;
   }
+
   50% {
     opacity: 0.3;
   }
@@ -595,17 +743,46 @@ body::before {
 @keyframes corePulse {
   0%, 100% {
     transform: scale(1);
-    box-shadow: 0 0 25px var(--red), 0 0 40px var(--purple);
+
+    box-shadow:
+      0 0 25px rgba(255, 23, 79, 0.8),
+      0 0 45px rgba(150, 44, 255, 0.45),
+      inset 0 0 30px rgba(255, 23, 79, 0.55);
   }
+
   50% {
-    transform: scale(1.06);
-    box-shadow: 0 0 45px var(--red), 0 0 65px var(--purple);
+    transform: scale(1.045);
+
+    box-shadow:
+      0 0 40px rgba(255, 23, 79, 1),
+      0 0 65px rgba(150, 44, 255, 0.7),
+      inset 0 0 40px rgba(255, 23, 79, 0.75);
   }
 }
 
-/* TABLET AND MOBILE */
+@keyframes webShimmer {
+  from {
+    opacity: 0.78;
+    filter:
+      drop-shadow(0 0 2px rgba(255, 242, 250, 0.7))
+      drop-shadow(0 0 4px rgba(255, 23, 79, 0.5));
+  }
+
+  to {
+    opacity: 1;
+    filter:
+      drop-shadow(0 0 3px rgba(255, 242, 250, 1))
+      drop-shadow(0 0 8px rgba(255, 23, 79, 0.8))
+      drop-shadow(0 0 12px rgba(150, 44, 255, 0.65));
+  }
+}
+
+/* ==========================================
+   TABLET
+========================================== */
 
 @media (max-width: 900px) {
+
   body {
     background-attachment: scroll;
   }
@@ -617,7 +794,7 @@ body::before {
   .core-section {
     grid-column: 1 / -1;
     grid-row: 1;
-    padding: 20px 0;
+    padding: 25px 0;
   }
 
   .side-panel {
@@ -629,13 +806,19 @@ body::before {
   }
 }
 
+/* ==========================================
+   MOBILE
+========================================== */
+
 @media (max-width: 550px) {
+
   .dashboard {
     padding: 15px;
   }
 
   .main-layout {
     grid-template-columns: 1fr;
+    gap: 18px;
   }
 
   .core-section {
@@ -648,8 +831,18 @@ body::before {
   }
 
   .core-container {
-    width: 220px;
-    height: 220px;
+    width: 235px;
+    height: 235px;
+  }
+
+  .core-inner {
+    width: 140px;
+    height: 140px;
+  }
+
+  .core-symbol {
+    width: 108px;
+    height: 118px;
   }
 
   .footer {
@@ -659,5 +852,29 @@ body::before {
   .system-indicator {
     font-size: 9px;
   }
-   }
-   
+
+  .brand h1 {
+    font-size: 19px;
+  }
+
+  #clock {
+    font-size: 19px;
+  }
+
+  .command-panel {
+    padding: 14px;
+  }
+}
+
+/* REDUCE MOTION WHEN REQUESTED */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+  }
+           }
+       

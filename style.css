@@ -2,7 +2,7 @@
 /* ==========================================
    MILES MORALES — SPIDER-VERSE
    PROJECT MM-01
-   VISUAL REBUILD // VERSION 4.1
+   VISUAL REBUILD // VERSION 4.2
 ========================================== */
 
 :root {
@@ -361,7 +361,7 @@ body::before {
   letter-spacing: 3px;
 }
 
-/* CENTRAL WEB AREA */
+/* SPIDER DISPLAY */
 
 .core-container {
   position: relative;
@@ -375,72 +375,65 @@ body::before {
   background:
     radial-gradient(
       circle,
-      rgba(119, 36, 184, 0.15),
-      rgba(8, 5, 11, 0.04) 65%,
-      transparent 76%
+      rgba(119, 36, 184, 0.13),
+      rgba(8, 5, 11, 0.03) 58%,
+      transparent 75%
     );
 }
 
-/* REMOVE OLD RINGS */
+/* NO WEB. NO RINGS. */
 
+.core-web,
 .core-ring,
 .core-orbit {
   display: none !important;
 }
 
-/* ACTUAL SPIDERWEB */
-
-.core-web {
-  position: absolute;
-  inset: 0;
-  z-index: 2;
-  pointer-events: none;
-
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 310 310'%3E%3Cg fill='none' stroke='%23e9dce9' stroke-width='1.15' opacity='.72'%3E%3Cpath d='M155 155 L155 3 M155 155 L232 24 M155 155 L286 79 M155 155 L307 155 M155 155 L286 231 M155 155 L232 286 M155 155 L155 307 M155 155 L78 286 M155 155 L24 231 M155 155 L3 155 M155 155 L24 79 M155 155 L78 24'/%3E%3Cpath d='M155 34 Q172 42 177 53 Q155 61 133 53 Q138 42 155 34Z'/%3E%3Cpath d='M155 61 Q191 70 204 91 Q155 109 106 91 Q119 70 155 61Z'/%3E%3Cpath d='M155 91 Q209 103 231 132 Q155 158 79 132 Q101 103 155 91Z'/%3E%3Cpath d='M155 121 Q225 132 254 169 Q155 207 56 169 Q85 132 155 121Z'/%3E%3Cpath d='M155 155 Q240 164 274 204 Q155 253 36 204 Q70 164 155 155Z'/%3E%3Cpath d='M155 184 Q239 194 267 232 Q155 278 43 232 Q71 194 155 184Z'/%3E%3C/g%3E%3C/svg%3E");
-
-  background-size: contain;
-  background-position: center;
-  background-repeat: no-repeat;
-
-  opacity: 0.85;
-}
-
-/* SPIDER BACKGROUND */
+/* SUBTLE LIGHT BEHIND SPIDER */
 
 .core-inner {
   position: relative;
-  z-index: 3;
+  z-index: 2;
+
   display: grid;
   place-items: center;
+
   width: 190px;
   height: 190px;
+
+  border: none;
   border-radius: 50%;
 
   background:
     radial-gradient(
-      circle,
-      rgba(237, 23, 75, 0.2),
-      rgba(119, 36, 184, 0.13) 48%,
-      rgba(3, 2, 4, 0.35) 75%
+      ellipse at center,
+      rgba(255, 255, 255, 0.10) 0%,
+      rgba(237, 23, 75, 0.20) 20%,
+      rgba(119, 36, 184, 0.18) 43%,
+      rgba(8, 5, 11, 0.02) 72%,
+      transparent 100%
     );
 
-  border: 1px solid rgba(237, 23, 75, 0.18);
-
   box-shadow:
-    0 0 45px rgba(237, 23, 75, 0.12),
-    0 0 65px rgba(119, 36, 184, 0.12);
+    0 0 35px rgba(237, 23, 75, 0.12),
+    0 0 65px rgba(119, 36, 184, 0.16);
 }
 
 /* BLACK SPIDER */
 
 .core-symbol {
   position: relative;
-  z-index: 4;
+  z-index: 3;
+
   display: grid;
   place-items: center;
+
   width: 145px;
   height: 155px;
-  filter: drop-shadow(0 5px 5px rgba(0, 0, 0, 0.8));
+
+  filter:
+    drop-shadow(0 2px 3px rgba(255, 255, 255, 0.12))
+    drop-shadow(0 6px 8px rgba(0, 0, 0, 0.85));
 }
 
 .core-symbol svg {
@@ -696,3 +689,4 @@ body::before {
     scroll-behavior: auto !important;
   }
    }
+   

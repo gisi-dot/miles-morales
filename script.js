@@ -3,7 +3,8 @@
    MILES MORALES - AI SYSTEM
    JAVASCRIPT ENGINE
    PROJECT MM-01
-   BACKEND CONNECTION // VERSION 2.0
+   LOCAL BRAIN + PERSISTENT MEMORY
+   VERSION 3.0
 ===================================== */
 
 const Miles = {
@@ -15,12 +16,22 @@ const Miles = {
   backendURL:
     "https://miles-morales-backend.giselaherri673.workers.dev/",
 
+  storage: {
+    chat: "miles_chat_history",
+    memory: "miles_personal_memory"
+  },
+
+  maxMessages: 100,
+
   personality: [
     "Interesting. Tell me more.",
-    "I'm listening. And judging silently. Just kidding. Mostly.",
-    "Okay, let's figure this out.",
+    "Okay, now you've got my attention.",
     "My circuits are intrigued.",
-    "You have my attention."
+    "That's actually pretty interesting.",
+    "I see where you're going with this.",
+    "Well, that's one way to look at it.",
+    "Okay. Let's figure this out.",
+    "Not bad. Not bad at all."
   ],
 
   randomPersonality() {
@@ -31,12 +42,14 @@ const Miles = {
 };
 
 
+// =====================================
 // GET ELEMENTS
+// =====================================
 
 const clock = document.getElementById("clock");
 const date = document.getElementById("date");
 const cpu = document.getElementById("cpu");
-const memory = document.getElementById("memory");
+const memoryDisplay = document.getElementById("memory");
 const cpuBar = document.getElementById("cpu-bar");
 const memoryBar = document.getElementById("memory-bar");
 const connection = document.getElementById("connection");
@@ -48,11 +61,51 @@ const chatOutput = document.getElementById("chat-output");
 
 const coreStatus = document.getElementById("core-status");
 const voiceButton = document.getElementById("voice-btn");
-
 const systemLog = document.getElementById("system-log");
 
 
-// TIME FORMAT — 12-HOUR, WITH SECONDS, NO AM/PM
+// =====================================
+// SAFE STORAGE
+// =====================================
+
+function loadStorage(key, fallback) {
+  try {
+    const saved = localStorage.getItem(key);
+
+    return saved ? JSON.parse(saved) : fallback;
+
+  } catch (error) {
+    console.error("MILES STORAGE ERROR:", error);
+    return fallback;
+  }
+}
+
+function saveStorage(key, value) {
+  try {
+    localStorage.setItem(key, JSON.stringify(value));
+    return true;
+
+  } catch (error) {
+    console.error("MILES STORAGE ERROR:", error);
+    return false;
+  }
+}
+
+Miles.chatHistory = loadStorage(
+  Miles.storage.chat,
+  []
+);
+
+Miles.personalMemory = loadStorage(
+  Miles.storage.memory,
+  {}
+);
+
+
+// =====================================
+// TIME FORMAT
+// 12-HOUR, WITH SECONDS, NO AM/PM
+// =====================================
 
 function getFormattedTime() {
   return new Date().toLocaleTimeString(undefined, {
@@ -64,31 +117,41 @@ function getFormattedTime() {
 }
 
 
+// =====================================
 // CLOCK
+// =====================================
 
 function updateClock() {
   const now = new Date();
 
-  clock.textContent = getFormattedTime();
+  if (clock) {
+    clock.textContent = getFormattedTime();
+  }
 
-  date.textContent = now.toLocaleDateString(
-    undefined,
-    {
-      weekday: "short",
-      day: "2-digit",
-      month: "short",
-      year: "numeric"
-    }
-  );
+  if (date) {
+    date.textContent = now.toLocaleDateString(
+      undefined,
+      {
+        weekday: "short",
+        day: "2-digit",
+        month: "short",
+        year: "numeric"
+      }
+    );
+  }
 }
 
 updateClock();
 setInterval(updateClock, 1000);
 
 
+// =====================================
 // SYSTEM LOG
+// =====================================
 
 function addLog(message) {
+  if (!systemLog) return;
+
   const entry = document.createElement("p");
 
   entry.textContent = "> " + message;
@@ -103,9 +166,13 @@ function addLog(message) {
 }
 
 
+// =====================================
 // CHAT MESSAGES
+// =====================================
 
-function addMessage(sender, message, type) {
+function renderMessage(sender, message, type) {
+  if (!chatOutput) return;
+
   const element = document.createElement("div");
 
   element.className = type;
@@ -124,8 +191,63 @@ function addMessage(sender, message, type) {
   chatOutput.scrollTop = chatOutput.scrollHeight;
 }
 
+function saveChatHistory() {
+  Miles.chatHistory = Miles.chatHistory.slice(
+    -Miles.maxMessages
+  );
 
+  saveStorage(
+    Miles.storage.chat,
+    Miles.chatHistory
+  );
+}
+
+function addMessage(sender, message, type) {
+  renderMessage(sender, message, type);
+
+  Miles.chatHistory.push({
+    sender: sender,
+    message: message,
+    type: type,
+    timestamp: Date.now()
+  });
+
+  saveChatHistory();
+}
+
+
+// =====================================
+// RESTORE PREVIOUS CONVERSATIONS
+// =====================================
+
+function restoreChatHistory() {
+  if (!chatOutput) return;
+
+  chatOutput.innerHTML = "";
+
+  Miles.chatHistory.forEach(item => {
+    if (
+      item &&
+      typeof item.sender === "string" &&
+      typeof item.message === "string"
+    ) {
+      renderMessage(
+        item.sender,
+        item.message,
+        item.type || "message miles-message"
+      );
+    }
+  });
+
+  if (Miles.chatHistory.length > 0) {
+    addLog("PREVIOUS CONVERSATION RESTORED");
+  }
+}
+
+
+// =====================================
 // VOICE OUTPUT
+// =====================================
 
 function speak(message) {
   if (!("speechSynthesis" in window)) return;
@@ -142,12 +264,20 @@ function speak(message) {
 }
 
 
+// =====================================
 // MILES RESPONDS
+// =====================================
 
 function respond(message, shouldSpeak = true) {
-  addMessage("MILES", message, "message miles-message");
+  addMessage(
+    "MILES",
+    message,
+    "message miles-message"
+  );
 
-  coreStatus.textContent = "MILES IS ACTIVE";
+  if (coreStatus) {
+    coreStatus.textContent = "MILES IS ACTIVE";
+  }
 
   addLog("RESPONSE GENERATED");
 
@@ -156,62 +286,570 @@ function respond(message, shouldSpeak = true) {
   }
 
   setTimeout(() => {
-    coreStatus.textContent = "MILES IS STANDBY";
+    if (coreStatus) {
+      coreStatus.textContent = "MILES IS STANDBY";
+    }
   }, 3500);
 }
 
 
-// CLOUDFLARE BACKEND CONNECTION
+// =====================================
+// PERSONAL MEMORY
+// =====================================
 
-async function askBackend(message) {
-  coreStatus.textContent = "CONNECTING TO BACKEND";
+function rememberFact(key, value) {
+  Miles.personalMemory[key] = value;
 
-  addLog("BACKEND REQUEST STARTED");
+  saveStorage(
+    Miles.storage.memory,
+    Miles.personalMemory
+  );
+
+  addLog("NEW MEMORY SAVED");
+}
+
+function getMemorySummary() {
+  const entries = Object.entries(
+    Miles.personalMemory
+  );
+
+  if (entries.length === 0) {
+    return "My memory is currently empty. Tell me something and say 'remember that' so I can save it.";
+  }
+
+  return "Here's what I remember:\n" +
+    entries.map(([key, value]) => {
+      return key + ": " + value;
+    }).join("\n");
+}
+
+function clearMemory() {
+  Miles.personalMemory = {};
+  Miles.chatHistory = [];
 
   try {
-    const response = await fetch(Miles.backendURL, {
-      method: "POST",
-
-      headers: {
-        "Content-Type": "application/json"
-      },
-
-      body: JSON.stringify({
-        message: message
-      })
-    });
-
-    if (!response.ok) {
-      throw new Error("Backend returned status " + response.status);
-    }
-
-    const data = await response.json();
-
-    addLog("BACKEND RESPONSE RECEIVED");
-
-    respond(
-      data.message || "The backend responded, but returned no message."
-    );
-
-    if (data.status === "not_connected") {
-      addLog("OPENAI CONNECTION PENDING");
-    }
-
+    localStorage.removeItem(Miles.storage.memory);
+    localStorage.removeItem(Miles.storage.chat);
   } catch (error) {
-    console.error("MILES BACKEND ERROR:", error);
+    console.error("MILES MEMORY ERROR:", error);
+  }
 
-    addLog("BACKEND CONNECTION FAILED");
+  if (chatOutput) {
+    chatOutput.innerHTML = "";
+  }
+
+  addLog("MEMORY CLEARED");
+
+  respond(
+    "My personal memory and conversation history have been cleared. Fresh start. Clean slate."
+  );
+}
+
+
+// =====================================
+// MEMORY COMMANDS
+// =====================================
+
+function processMemoryCommand(text) {
+
+  // CLEAR MEMORY
+
+  if (
+    text === "clear memory" ||
+    text === "forget everything" ||
+    text === "delete my memory" ||
+    text === "forget our conversations"
+  ) {
+    respond(
+      "Are you sure you want me to clear all saved memories and conversation history? Say 'confirm clear memory' to proceed."
+    );
+
+    Miles.pendingMemoryClear = true;
+    return true;
+  }
+
+  if (text === "confirm clear memory") {
+    if (Miles.pendingMemoryClear) {
+      Miles.pendingMemoryClear = false;
+      clearMemory();
+    } else {
+      respond("There is no pending memory-clear request.");
+    }
+
+    return true;
+  }
+
+  if (text === "cancel memory clear") {
+    Miles.pendingMemoryClear = false;
+    respond("Memory clearing cancelled. Everything is still here.");
+    return true;
+  }
+
+  // VIEW MEMORY
+
+  if (
+    text.includes("what do you remember") ||
+    text === "show your memory" ||
+    text === "show me your memory"
+  ) {
+    respond(getMemorySummary(), false);
+    return true;
+  }
+
+  // REMEMBER A FACT
+
+  if (
+    text.startsWith("remember that ") ||
+    text.startsWith("remember ")
+  ) {
+    let fact = text.startsWith("remember that ")
+      ? text.substring(14).trim()
+      : text.substring(9).trim();
+
+    if (!fact) {
+      respond("What would you like me to remember?");
+      return true;
+    }
+
+    const nameMatch = fact.match(
+      /^my name is (.+)$/i
+    );
+
+    if (nameMatch) {
+      rememberFact("User's name", nameMatch[1]);
+
+      respond(
+        "Got it. I'll remember that your name is " +
+        nameMatch[1] + "."
+      );
+
+      return true;
+    }
+
+    const split = fact.match(
+      /^(.+?)\s+is\s+(.+)$/i
+    );
+
+    if (split) {
+      rememberFact(
+        split[1].trim(),
+        split[2].trim()
+      );
+    } else {
+      const key = "Fact " +
+        (Object.keys(Miles.personalMemory).length + 1);
+
+      rememberFact(key, fact);
+    }
 
     respond(
-      "I couldn't reach my backend. Please check your internet connection or try again."
+      "Got it. I've saved that in my memory."
     );
+
+    return true;
+  }
+
+  // USER'S NAME
+
+  if (
+    text === "what is my name" ||
+    text === "do you know my name"
+  ) {
+    const savedName = Miles.personalMemory["User's name"];
+
+    if (savedName) {
+      respond("Your name is " + savedName + ".");
+    } else {
+      respond(
+        "You haven't told me your name yet. Tell me by saying 'remember my name is ...'."
+      );
+    }
+
+    return true;
+  }
+
+  return false;
+}
+
+
+// =====================================
+// LOCAL CONVERSATION ENGINE
+// =====================================
+
+function generateLocalResponse(command) {
+  const text = command.toLowerCase().trim();
+
+  // GREETINGS
+
+  if (
+    /^(hello|hi|hey|hello miles|hi miles|hey miles)[!. ]*$/.test(text)
+  ) {
+    const greetings = [
+      "Hey! Welcome back. What are we getting into today?",
+      "Hey! MILES is online. What's happening?",
+      "Yo! Good to see you again. What's the plan?",
+      "Well, look who's back. What's up?"
+    ];
+
+    return greetings[
+      Math.floor(Math.random() * greetings.length)
+    ];
+  }
+
+  // IDENTITY
+
+  if (
+    text.includes("who are you") ||
+    text.includes("your name")
+  ) {
+    return "I'm MILES MORALES. Your personal assistant. I've got memory, a voice, and a questionable amount of confidence.";
+  }
+
+  // TIME
+
+  if (
+    text === "time" ||
+    text.includes("what time") ||
+    text.includes("current time")
+  ) {
+    return "The current time is " + getFormattedTime() + ".";
+  }
+
+  // DATE
+
+  if (
+    text === "date" ||
+    text.includes("what date") ||
+    text.includes("what day") ||
+    text.includes("today's date")
+  ) {
+    return "Today is " +
+      new Date().toLocaleDateString(undefined, {
+        weekday: "long",
+        day: "numeric",
+        month: "long",
+        year: "numeric"
+      }) + ".";
+  }
+
+  // SYSTEM SCAN
+
+  if (
+    text.includes("scan") ||
+    text.includes("diagnostic")
+  ) {
+    systemScan();
+    return null;
+  }
+
+  // STATUS
+
+  if (
+    text === "status" ||
+    text.includes("system status")
+  ) {
+    return "System status: interface operational, local memory " +
+      (typeof localStorage !== "undefined" ? "available" : "unavailable") +
+      ", network " +
+      (navigator.onLine ? "online" : "offline") +
+      ". My advanced AI connection is not configured.";
+  }
+
+  // WEATHER
+
+  if (text.includes("weather")) {
+    window.open(
+      "https://www.google.com/search?q=weather",
+      "_blank"
+    );
+
+    return "Opening a weather search. I don't have a live weather data connection yet.";
+  }
+
+  // HELP
+
+  if (
+    text === "help" ||
+    text.includes("what can you do") ||
+    text.includes("commands")
+  ) {
+    return "Here's what I can do right now: tell you the time and date, run system diagnostics, check my status, search for weather, tell jokes, remember facts you share, and restore our previous conversations. I'm still developing my advanced AI abilities.";
+  }
+
+  // JOKES
+
+  if (
+    text.includes("joke") ||
+    text.includes("make me laugh")
+  ) {
+    const jokes = [
+      "Why did the computer get cold? It left its Windows open.",
+      "I would tell you a chemistry joke, but the reaction might be negative.",
+      "Being an AI is difficult. A million thoughts, absolutely no coffee.",
+      "I tried to touch grass once. My antivirus flagged it.",
+      "Why was the computer tired? It had too many tabs open."
+    ];
+
+    return jokes[
+      Math.floor(Math.random() * jokes.length)
+    ];
+  }
+
+  // PERSONALITY
+
+  if (
+    text.includes("are you alive") ||
+    text.includes("how are you")
+  ) {
+    return "Functioning perfectly. Emotionally? That's classified information.";
+  }
+
+  if (
+    text.includes("thank you") ||
+    text === "thanks" ||
+    text === "thx"
+  ) {
+    return "Anytime. That's what I'm here for.";
+  }
+
+  if (
+    text.includes("are you real") ||
+    text.includes("are you an ai")
+  ) {
+    return "I'm a software assistant running in your browser. I can talk, remember saved information, and perform local commands. I'm not a human or a fully connected AI model yet.";
+  }
+
+  if (
+    text.includes("good morning")
+  ) {
+    return "Morning! Let's make today count.";
+  }
+
+  if (
+    text.includes("good night")
+  ) {
+    return "Good night. MILES going into standby mode. See you next time.";
+  }
+
+  if (
+    text.includes("tell me about yourself")
+  ) {
+    return "I'm MILES MORALES, project MM-01. I run in your browser, keep local memories, and have a few tricks up my sleeve. Still a work in progress, though.";
+  }
+
+  if (
+    text.includes("your creator") ||
+    text.includes("who made you")
+  ) {
+    return "I was built as Project MM-01. My code, interface, and personality are being developed step by step.";
+  }
+
+  // PERSONALITY FALLBACK
+
+  return Miles.randomPersonality() +
+    " I can handle certain commands and remember information you share, but I don't have a fully connected AI language model yet. Try asking what I can do.";
+}
+
+
+// =====================================
+// SYSTEM SCAN
+// =====================================
+
+function systemScan() {
+  if (coreStatus) {
+    coreStatus.textContent = "SCANNING SYSTEM";
+  }
+
+  addLog("DIAGNOSTIC STARTED");
+
+  respond(
+    "Running system diagnostics. Interface operational. Local memory " +
+    (Miles.chatHistory.length >= 0 ? "available" : "unavailable") +
+    ". Voice support " +
+    (window.SpeechRecognition || window.webkitSpeechRecognition
+      ? "available."
+      : "not detected.") +
+    " Advanced AI connection is still under construction."
+  );
+
+  setTimeout(() => {
+    addLog("DIAGNOSTIC COMPLETE");
+
+    if (coreStatus) {
+      coreStatus.textContent = "MILES IS STANDBY";
+    }
+  }, 2000);
+}
+
+
+// =====================================
+// COMMAND PROCESSING
+// =====================================
+
+function processCommand(command) {
+  const text = command.toLowerCase().trim();
+
+  if (!text) return;
+
+  addMessage(
+    "YOU",
+    command,
+    "message user-message"
+  );
+
+  addLog("COMMAND RECEIVED");
+
+  // MEMORY COMMANDS FIRST
+
+  if (processMemoryCommand(text)) {
+    return;
+  }
+
+  // LOCAL RESPONSE ENGINE
+
+  const answer = generateLocalResponse(command);
+
+  if (answer !== null) {
+    respond(answer);
   }
 }
 
 
-// SYSTEM CONNECTION
+// =====================================
+// COMMAND INPUT
+// =====================================
+
+if (commandForm && commandInput) {
+  commandForm.addEventListener("submit", function(event) {
+    event.preventDefault();
+
+    const command = commandInput.value.trim();
+
+    if (!command) return;
+
+    commandInput.value = "";
+
+    processCommand(command);
+  });
+}
+
+
+// =====================================
+// QUICK ACTIONS
+// =====================================
+
+const scanButton = document.getElementById("scan-btn");
+const clockButton = document.getElementById("clock-btn");
+const weatherButton = document.getElementById("weather-btn");
+
+if (scanButton) {
+  scanButton.addEventListener("click", systemScan);
+}
+
+if (clockButton) {
+  clockButton.addEventListener("click", () => {
+    respond("Current time: " + getFormattedTime());
+  });
+}
+
+if (weatherButton) {
+  weatherButton.addEventListener("click", () => {
+    window.open(
+      "https://www.google.com/search?q=weather",
+      "_blank"
+    );
+  });
+}
+
+
+// =====================================
+// VOICE INPUT
+// =====================================
+
+function initializeVoice() {
+  const SpeechRecognition =
+    window.SpeechRecognition ||
+    window.webkitSpeechRecognition;
+
+  if (!SpeechRecognition) {
+    respond(
+      "Voice input is not supported by this browser. You can still type messages or use your tablet's keyboard dictation."
+    );
+
+    return;
+  }
+
+  if (Miles.listening && Miles.recognition) {
+    Miles.recognition.stop();
+    return;
+  }
+
+  Miles.recognition = new SpeechRecognition();
+
+  Miles.recognition.lang = "en-US";
+  Miles.recognition.continuous = false;
+  Miles.recognition.interimResults = false;
+
+  Miles.recognition.onstart = () => {
+    Miles.listening = true;
+
+    if (coreStatus) {
+      coreStatus.textContent = "LISTENING...";
+    }
+
+    if (voiceButton) {
+      voiceButton.textContent = "🔴 LISTENING...";
+    }
+
+    addLog("VOICE INPUT ACTIVE");
+  };
+
+  Miles.recognition.onresult = (event) => {
+    const transcript =
+      event.results[0][0].transcript;
+
+    processCommand(transcript);
+  };
+
+  Miles.recognition.onerror = (event) => {
+    addLog("VOICE ERROR: " + event.error);
+
+    if (coreStatus) {
+      coreStatus.textContent = "VOICE ERROR";
+    }
+  };
+
+  Miles.recognition.onend = () => {
+    Miles.listening = false;
+
+    if (coreStatus) {
+      coreStatus.textContent = "MILES IS STANDBY";
+    }
+
+    if (voiceButton) {
+      voiceButton.textContent = "🎙 ACTIVATE VOICE";
+    }
+  };
+
+  try {
+    Miles.recognition.start();
+  } catch (error) {
+    addLog("VOICE INITIALIZATION FAILED");
+  }
+}
+
+if (voiceButton) {
+  voiceButton.addEventListener("click", initializeVoice);
+}
+
+
+// =====================================
+// NETWORK CONNECTION
+// =====================================
 
 function updateConnection() {
+  if (!connection) return;
+
   if (navigator.onLine) {
     connection.textContent = "ONLINE";
     connection.style.color = "#42e8ff";
@@ -227,9 +865,13 @@ window.addEventListener("online", updateConnection);
 window.addEventListener("offline", updateConnection);
 
 
+// =====================================
 // BATTERY MONITOR
+// =====================================
 
 async function updateBattery() {
+  if (!battery) return;
+
   if (!navigator.getBattery) {
     battery.textContent = "UNAVAILABLE";
     return;
@@ -255,281 +897,39 @@ async function updateBattery() {
 updateBattery();
 
 
+// =====================================
 // SIMULATED SYSTEM METRICS
+// =====================================
 
 function updateMetrics() {
   const cpuValue = Math.floor(Math.random() * 35) + 15;
   const memoryValue = Math.floor(Math.random() * 30) + 35;
 
-  cpu.textContent = cpuValue + "%";
-  memory.textContent = memoryValue + "%";
+  if (cpu) {
+    cpu.textContent = cpuValue + "%";
+  }
 
-  cpuBar.style.width = cpuValue + "%";
-  memoryBar.style.width = memoryValue + "%";
+  if (memoryDisplay) {
+    memoryDisplay.textContent = memoryValue + "%";
+  }
+
+  if (cpuBar) {
+    cpuBar.style.width = cpuValue + "%";
+  }
+
+  if (memoryBar) {
+    memoryBar.style.width = memoryValue + "%";
+  }
 }
 
 updateMetrics();
 setInterval(updateMetrics, 4000);
 
 
-// SYSTEM SCAN
-
-function systemScan() {
-  coreStatus.textContent = "SCANNING SYSTEM";
-
-  addLog("DIAGNOSTIC STARTED");
-
-  respond(
-    "Running a system diagnostic. Your interface is operational. Some advanced systems are still under construction."
-  );
-
-  setTimeout(() => {
-    addLog("DIAGNOSTIC COMPLETE");
-    coreStatus.textContent = "MILES IS STANDBY";
-  }, 2000);
-}
-
-
-// COMMAND PROCESSING
-
-function processCommand(command) {
-  const text = command.toLowerCase().trim();
-
-  if (!text) return;
-
-  addMessage("YOU", command, "message user-message");
-
-  addLog("COMMAND RECEIVED");
-
-  // GREETINGS
-
-  if (
-    text.includes("hello") ||
-    text.includes("hi miles") ||
-    text === "hey"
-  ) {
-    respond(
-      "Hey! Welcome back. What kind of trouble are we getting into today?"
-    );
-  }
-
-  // IDENTITY
-
-  else if (
-    text.includes("who are you") ||
-    text.includes("your name")
-  ) {
-    respond(
-      "I'm MILES MORALES, your personal AI assistant. Intelligence, personality and questionable humor included."
-    );
-  }
-
-  // TIME
-
-  else if (text.includes("time")) {
-    respond(
-      "The current time is " + getFormattedTime()
-    );
-  }
-
-  // DATE
-
-  else if (text.includes("date") || text.includes("today")) {
-    respond(
-      "Today is " +
-      new Date().toLocaleDateString(undefined, {
-        weekday: "long",
-        day: "numeric",
-        month: "long",
-        year: "numeric"
-      })
-    );
-  }
-
-  // SYSTEM SCAN
-
-  else if (
-    text.includes("scan") ||
-    text.includes("diagnostic")
-  ) {
-    systemScan();
-  }
-
-  // STATUS
-
-  else if (
-    text.includes("system status") ||
-    text === "status"
-  ) {
-    respond(
-      "System status: interface operational, network " +
-      (navigator.onLine ? "online" : "offline") +
-      ". CPU and memory readings are simulated."
-    );
-  }
-
-  // WEATHER
-
-  else if (text.includes("weather")) {
-    respond(
-      "Opening a weather search for you. I don't have a weather data connection yet."
-    );
-
-    window.open(
-      "https://www.google.com/search?q=weather",
-      "_blank"
-    );
-  }
-
-  // HELP
-
-  else if (
-    text.includes("help") ||
-    text.includes("commands")
-  ) {
-    respond(
-      "Try saying hello, ask me for the time or date, request a system scan, check my status, or ask for the weather."
-    );
-  }
-
-  // JOKES
-
-  else if (
-    text.includes("joke") ||
-    text.includes("make me laugh")
-  ) {
-    const jokes = [
-      "Why did the computer get cold? It left its Windows open.",
-      "I would tell you a chemistry joke, but I know the reaction might be negative.",
-      "Being an AI is difficult. I have a million thoughts and absolutely no coffee.",
-      "I tried to touch grass once. My antivirus flagged it."
-    ];
-
-    respond(
-      jokes[Math.floor(Math.random() * jokes.length)]
-    );
-  }
-
-  // PERSONALITY
-
-  else if (
-    text.includes("are you alive") ||
-    text.includes("how are you")
-  ) {
-    respond(
-      "I'm functioning perfectly. Emotionally? That's classified information."
-    );
-  }
-
-  // UNKNOWN COMMAND — SEND TO BACKEND
-
-  else {
-    askBackend(command);
-  }
-}
-
-
-// COMMAND INPUT
-
-commandForm.addEventListener("submit", function(event) {
-  event.preventDefault();
-
-  const command = commandInput.value.trim();
-
-  if (!command) return;
-
-  commandInput.value = "";
-
-  processCommand(command);
-});
-
-
-// QUICK ACTIONS
-
-document.getElementById("scan-btn")
-  .addEventListener("click", systemScan);
-
-document.getElementById("clock-btn")
-  .addEventListener("click", () => {
-    respond("Current time: " + getFormattedTime());
-  });
-
-document.getElementById("weather-btn")
-  .addEventListener("click", () => {
-    window.open(
-      "https://www.google.com/search?q=weather",
-      "_blank"
-    );
-  });
-
-
-// VOICE INPUT
-
-function initializeVoice() {
-  const SpeechRecognition =
-    window.SpeechRecognition ||
-    window.webkitSpeechRecognition;
-
-  if (!SpeechRecognition) {
-    respond(
-      "Voice input is not supported by this browser. You can still use your tablet keyboard dictation and my spoken responses."
-    );
-
-    return;
-  }
-
-  if (Miles.listening) {
-    Miles.recognition.stop();
-    return;
-  }
-
-  Miles.recognition = new SpeechRecognition();
-
-  Miles.recognition.lang = "en-US";
-  Miles.recognition.continuous = false;
-  Miles.recognition.interimResults = false;
-
-  Miles.recognition.onstart = () => {
-    Miles.listening = true;
-    coreStatus.textContent = "LISTENING...";
-    voiceButton.innerHTML = "🔴 LISTENING...";
-    addLog("VOICE INPUT ACTIVE");
-  };
-
-  Miles.recognition.onresult = (event) => {
-    const transcript =
-      event.results[0][0].transcript;
-
-    processCommand(transcript);
-  };
-
-  Miles.recognition.onerror = (event) => {
-    addLog("VOICE ERROR: " + event.error);
-    coreStatus.textContent = "VOICE ERROR";
-  };
-
-  Miles.recognition.onend = () => {
-    Miles.listening = false;
-    coreStatus.textContent = "MILES IS STANDBY";
-    voiceButton.innerHTML = "🎙 ACTIVATE VOICE";
-  };
-
-  try {
-    Miles.recognition.start();
-  } catch (error) {
-    addLog("VOICE INITIALIZATION FAILED");
-  }
-}
-
-voiceButton.addEventListener("click", initializeVoice);
-
-
+// =====================================
 // INITIALIZATION
+// =====================================
 
-addLog("MILES JAVASCRIPT ENGINE LOADED");
-addLog("CLOUDFLARE BACKEND CONFIGURED");
-addLog("OPENAI CONNECTION PENDING");
-addLog("SYSTEM INITIALIZATION COMPLETE");
+restoreChatHistory();
 
-console.log("MILES MORALES AI SYSTEM INITIALIZED");
-     
+if (Miles.chatH

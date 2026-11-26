@@ -11,7 +11,6 @@ const Miles = {
   listening: false,
   recognition: null,
 
-  // AI PERSONALITY
   personality: [
     "Interesting. Tell me more.",
     "I'm listening. And judging silently. Just kidding. Mostly.",
@@ -20,7 +19,6 @@ const Miles = {
     "You have my attention."
   ],
 
-  // RANDOM PERSONALITY RESPONSE
   randomPersonality() {
     return this.personality[
       Math.floor(Math.random() * this.personality.length)
@@ -29,6 +27,7 @@ const Miles = {
 };
 
 // GET ELEMENTS
+
 const clock = document.getElementById("clock");
 const date = document.getElementById("date");
 const cpu = document.getElementById("cpu");
@@ -47,14 +46,24 @@ const voiceButton = document.getElementById("voice-btn");
 
 const systemLog = document.getElementById("system-log");
 
+
+// TIME FORMAT — 12-HOUR, NO AM/PM
+
+function getFormattedTime() {
+  return new Date().toLocaleTimeString(undefined, {
+    hour: "numeric",
+    minute: "2-digit",
+    hour12: true
+  }).replace(/\s?[AP]M/i, "");
+}
+
+
 // CLOCK
+
 function updateClock() {
   const now = new Date();
 
-  clock.textContent = now.toLocaleTimeString(
-    undefined,
-    { hour12: false }
-  );
+  clock.textContent = getFormattedTime();
 
   date.textContent = now.toLocaleDateString(
     undefined,
@@ -72,6 +81,7 @@ setInterval(updateClock, 1000);
 
 
 // SYSTEM LOG
+
 function addLog(message) {
   const entry = document.createElement("p");
 
@@ -88,6 +98,7 @@ function addLog(message) {
 
 
 // CHAT MESSAGES
+
 function addMessage(sender, message, type) {
   const element = document.createElement("div");
 
@@ -109,6 +120,7 @@ function addMessage(sender, message, type) {
 
 
 // VOICE OUTPUT
+
 function speak(message) {
   if (!("speechSynthesis" in window)) return;
 
@@ -125,6 +137,7 @@ function speak(message) {
 
 
 // MILES RESPONDS
+
 function respond(message, shouldSpeak = true) {
   addMessage("MILES", message, "message miles-message");
 
@@ -143,6 +156,7 @@ function respond(message, shouldSpeak = true) {
 
 
 // SYSTEM CONNECTION
+
 function updateConnection() {
   if (navigator.onLine) {
     connection.textContent = "ONLINE";
@@ -160,6 +174,7 @@ window.addEventListener("offline", updateConnection);
 
 
 // BATTERY MONITOR
+
 async function updateBattery() {
   if (!navigator.getBattery) {
     battery.textContent = "UNAVAILABLE";
@@ -187,6 +202,7 @@ updateBattery();
 
 
 // SIMULATED SYSTEM METRICS
+
 function updateMetrics() {
   const cpuValue = Math.floor(Math.random() * 35) + 15;
   const memoryValue = Math.floor(Math.random() * 30) + 35;
@@ -203,6 +219,7 @@ setInterval(updateMetrics, 4000);
 
 
 // SYSTEM SCAN
+
 function systemScan() {
   coreStatus.textContent = "SCANNING SYSTEM";
 
@@ -220,6 +237,7 @@ function systemScan() {
 
 
 // COMMAND PROCESSING
+
 function processCommand(command) {
   const text = command.toLowerCase().trim();
 
@@ -230,6 +248,7 @@ function processCommand(command) {
   addLog("COMMAND RECEIVED");
 
   // GREETINGS
+
   if (
     text.includes("hello") ||
     text.includes("hi miles") ||
@@ -241,6 +260,7 @@ function processCommand(command) {
   }
 
   // IDENTITY
+
   else if (
     text.includes("who are you") ||
     text.includes("your name")
@@ -251,14 +271,15 @@ function processCommand(command) {
   }
 
   // TIME
+
   else if (text.includes("time")) {
     respond(
-      "The current time is " +
-      new Date().toLocaleTimeString()
+      "The current time is " + getFormattedTime()
     );
   }
 
   // DATE
+
   else if (text.includes("date") || text.includes("today")) {
     respond(
       "Today is " +
@@ -272,6 +293,7 @@ function processCommand(command) {
   }
 
   // SYSTEM SCAN
+
   else if (
     text.includes("scan") ||
     text.includes("diagnostic")
@@ -280,6 +302,7 @@ function processCommand(command) {
   }
 
   // STATUS
+
   else if (
     text.includes("system status") ||
     text === "status"
@@ -292,6 +315,7 @@ function processCommand(command) {
   }
 
   // WEATHER
+
   else if (text.includes("weather")) {
     respond(
       "Opening a weather search for you. I don't have a weather data connection yet."
@@ -304,6 +328,7 @@ function processCommand(command) {
   }
 
   // HELP
+
   else if (
     text.includes("help") ||
     text.includes("commands")
@@ -314,6 +339,7 @@ function processCommand(command) {
   }
 
   // JOKES
+
   else if (
     text.includes("joke") ||
     text.includes("make me laugh")
@@ -331,6 +357,7 @@ function processCommand(command) {
   }
 
   // PERSONALITY
+
   else if (
     text.includes("are you alive") ||
     text.includes("how are you")
@@ -341,6 +368,7 @@ function processCommand(command) {
   }
 
   // UNKNOWN COMMAND
+
   else {
     respond(
       "I don't understand that command yet. Try asking for help. My full AI brain is still being developed."
@@ -350,6 +378,7 @@ function processCommand(command) {
 
 
 // COMMAND INPUT
+
 commandForm.addEventListener("submit", function(event) {
   event.preventDefault();
 
@@ -364,12 +393,13 @@ commandForm.addEventListener("submit", function(event) {
 
 
 // QUICK ACTIONS
+
 document.getElementById("scan-btn")
   .addEventListener("click", systemScan);
 
 document.getElementById("clock-btn")
   .addEventListener("click", () => {
-    respond("Current time: " + new Date().toLocaleTimeString());
+    respond("Current time: " + getFormattedTime());
   });
 
 document.getElementById("weather-btn")
@@ -382,6 +412,7 @@ document.getElementById("weather-btn")
 
 
 // VOICE INPUT
+
 function initializeVoice() {
   const SpeechRecognition =
     window.SpeechRecognition ||
@@ -389,7 +420,7 @@ function initializeVoice() {
 
   if (!SpeechRecognition) {
     respond(
-      "Voice input is not supported by this browser. You can still use your iPad keyboard dictation and my spoken responses."
+      "Voice input is not supported by this browser. You can still use your tablet keyboard dictation and my spoken responses."
     );
 
     return;
@@ -442,7 +473,9 @@ voiceButton.addEventListener("click", initializeVoice);
 
 
 // INITIALIZATION
+
 addLog("MILES JAVASCRIPT ENGINE LOADED");
 addLog("SYSTEM INITIALIZATION COMPLETE");
 
 console.log("MILES MORALES AI SYSTEM INITIALIZED");
+     

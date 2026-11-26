@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#08060c">
+  <meta name="theme-color" content="#08050d">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <title>MILES MORALES | AI SYSTEM</title>
@@ -95,6 +95,8 @@
 
       </aside>
 
+      <!-- MILES AI CORE -->
+
       <section class="core-section">
 
         <div class="core-label">
@@ -108,21 +110,91 @@
           <div class="core-ring ring-two"></div>
           <div class="core-ring ring-three"></div>
 
+          <!-- WEB LAYER -->
+          <div class="core-web"></div>
+
+          <!-- CENTRAL SPIDER -->
           <div class="core-inner">
-            <div class="core-symbol" aria-label="Spider emblem">
-              <svg viewBox="0 0 120 140" xmlns="http://www.w3.org/2000/svg" role="img">
-                <g fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M60 43 L60 20"/>
-                  <path d="M60 47 C48 34 34 31 25 40 L14 54 L34 57 L17 76 L42 77 L31 99 L55 88"/>
-                  <path d="M60 47 C72 34 86 31 95 40 L106 54 L86 57 L103 76 L78 77 L89 99 L65 88"/>
-                  <path d="M60 47 C42 51 38 70 44 87 C48 101 55 112 60 122 C65 112 72 101 76 87 C82 70 78 51 60 47 Z" fill="currentColor" stroke="none"/>
-                  <path d="M60 122 L60 135"/>
+            <div class="core-symbol">
+
+              <svg viewBox="0 0 160 160"
+                   xmlns="http://www.w3.org/2000/svg"
+                   role="img"
+                   aria-label="Red spider emblem">
+
+                <defs>
+                  <linearGradient id="spiderRed" x1="0" y1="0" x2="1" y2="1">
+                    <stop offset="0%" stop-color="#ff789b"/>
+                    <stop offset="45%" stop-color="#ff174f"/>
+                    <stop offset="100%" stop-color="#a90038"/>
+                  </linearGradient>
+
+                  <filter id="spiderGlow">
+                    <feGaussianBlur stdDeviation="3" result="blur"/>
+                    <feMerge>
+                      <feMergeNode in="blur"/>
+                      <feMergeNode in="SourceGraphic"/>
+                    </feMerge>
+                  </filter>
+                </defs>
+
+                <g
+                  fill="none"
+                  stroke="url(#spiderRed)"
+                  stroke-width="8"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  filter="url(#spiderGlow)">
+
+                  <!-- LEFT LEGS -->
+                  <path d="M68 66 Q47 43 25 34 L12 17"/>
+                  <path d="M65 78 Q39 65 18 68 L7 58"/>
+                  <path d="M65 91 Q39 94 19 111 L8 126"/>
+                  <path d="M70 103 Q49 123 43 145 L30 153"/>
+
+                  <!-- RIGHT LEGS -->
+                  <path d="M92 66 Q113 43 135 34 L148 17"/>
+                  <path d="M95 78 Q121 65 142 68 L153 58"/>
+                  <path d="M95 91 Q121 94 141 111 L152 126"/>
+                  <path d="M90 103 Q111 123 117 145 L130 153"/>
+
                 </g>
+
+                <!-- ABDOMEN -->
+                <path
+                  d="M80 91
+                     C60 89 55 111 62 132
+                     C66 145 75 153 80 157
+                     C85 153 94 145 98 132
+                     C105 111 100 89 80 91Z"
+                  fill="url(#spiderRed)"
+                  filter="url(#spiderGlow)"/>
+
+                <!-- ABDOMEN DETAIL -->
+                <path
+                  d="M80 105 L72 125 L80 139 L88 125Z"
+                  fill="#310719"
+                  opacity="0.85"/>
+
+                <!-- HEAD -->
+                <path
+                  d="M80 39
+                     C61 39 57 54 62 70
+                     C66 83 73 91 80 94
+                     C87 91 94 83 98 70
+                     C103 54 99 39 80 39Z"
+                  fill="url(#spiderRed)"
+                  filter="url(#spiderGlow)"/>
+
+                <!-- EYES -->
+                <path d="M68 55 L78 62 L72 67Z" fill="#fff2fa"/>
+                <path d="M92 55 L82 62 L88 67Z" fill="#fff2fa"/>
+
               </svg>
+
             </div>
           </div>
 
-          <div class="core-web" aria-hidden="true"></div>
           <div class="core-orbit"></div>
 
         </div>
@@ -226,4 +298,4 @@
 
 </body>
   </html>
-            
+                              

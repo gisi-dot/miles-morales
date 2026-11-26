@@ -3,6 +3,7 @@
    MILES MORALES - AI SYSTEM
    JAVASCRIPT ENGINE
    PROJECT MM-01
+   BACKEND CONNECTION // VERSION 2.0
 ===================================== */
 
 const Miles = {
@@ -10,6 +11,9 @@ const Miles = {
   version: "MM-01",
   listening: false,
   recognition: null,
+
+  backendURL:
+    "https://miles-morales-backend.giselaherri673.workers.dev/",
 
   personality: [
     "Interesting. Tell me more.",
@@ -25,6 +29,7 @@ const Miles = {
     ];
   }
 };
+
 
 // GET ELEMENTS
 
@@ -153,6 +158,54 @@ function respond(message, shouldSpeak = true) {
   setTimeout(() => {
     coreStatus.textContent = "MILES IS STANDBY";
   }, 3500);
+}
+
+
+// CLOUDFLARE BACKEND CONNECTION
+
+async function askBackend(message) {
+  coreStatus.textContent = "CONNECTING TO BACKEND";
+
+  addLog("BACKEND REQUEST STARTED");
+
+  try {
+    const response = await fetch(Miles.backendURL, {
+      method: "POST",
+
+      headers: {
+        "Content-Type": "application/json"
+      },
+
+      body: JSON.stringify({
+        message: message
+      })
+    });
+
+    if (!response.ok) {
+      throw new Error("Backend returned status " + response.status);
+    }
+
+    const data = await response.json();
+
+    addLog("BACKEND RESPONSE RECEIVED");
+
+    respond(
+      data.message || "The backend responded, but returned no message."
+    );
+
+    if (data.status === "not_connected") {
+      addLog("OPENAI CONNECTION PENDING");
+    }
+
+  } catch (error) {
+    console.error("MILES BACKEND ERROR:", error);
+
+    addLog("BACKEND CONNECTION FAILED");
+
+    respond(
+      "I couldn't reach my backend. Please check your internet connection or try again."
+    );
+  }
 }
 
 
@@ -368,12 +421,10 @@ function processCommand(command) {
     );
   }
 
-  // UNKNOWN COMMAND
+  // UNKNOWN COMMAND — SEND TO BACKEND
 
   else {
-    respond(
-      "I don't understand that command yet. Try asking for help. My full AI brain is still being developed."
-    );
+    askBackend(command);
   }
 }
 
@@ -476,7 +527,9 @@ voiceButton.addEventListener("click", initializeVoice);
 // INITIALIZATION
 
 addLog("MILES JAVASCRIPT ENGINE LOADED");
+addLog("CLOUDFLARE BACKEND CONFIGURED");
+addLog("OPENAI CONNECTION PENDING");
 addLog("SYSTEM INITIALIZATION COMPLETE");
 
 console.log("MILES MORALES AI SYSTEM INITIALIZED");
-   
+     

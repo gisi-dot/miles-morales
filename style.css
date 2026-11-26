@@ -6,12 +6,12 @@
 
 :root {
   --background: #08060c;
-  --panel: rgba(19, 12, 25, 0.94);
+  --panel: rgba(13, 8, 19, 0.88);
   --blue: #713cff;
-  --cyan: #a77bff;
+  --cyan: #c49aff;
   --red: #ff174f;
   --white: #fff2fa;
-  --muted: #a18ca9;
+  --muted: #b5a0bd;
   --purple: #8c27ff;
 }
 
@@ -21,20 +21,33 @@
   box-sizing: border-box;
 }
 
+html {
+  background: #08060c;
+}
+
 body {
-  background:
+  position: relative;
+  isolation: isolate;
+  background-color: #08060c;
+  background-image:
     linear-gradient(
-      rgba(8, 6, 12, 0.25),
-      rgba(8, 6, 12, 0.45)
+      180deg,
+      rgba(8, 6, 12, 0.12) 0%,
+      rgba(8, 6, 12, 0.28) 45%,
+      rgba(8, 6, 12, 0.68) 100%
     ),
-    url("miles-graffiti.png") center top / cover fixed;
+    url("./miles-graffiti.png");
+  background-position: center top;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
   color: var(--white);
   font-family: "Courier New", monospace;
   min-height: 100vh;
   overflow-x: hidden;
 }
 
-/* SPIDER-VERSE BACKGROUND */
+/* COMIC BOOK HALFTONE */
 
 body::before {
   content: "";
@@ -42,22 +55,35 @@ body::before {
   inset: 0;
   pointer-events: none;
   z-index: -1;
-  opacity: .06;
+  opacity: 0.10;
   background-image:
-    radial-gradient(circle, #ff174f 1px, transparent 1.5px),
-    radial-gradient(circle, #8c27ff 1px, transparent 1.5px);
-  background-size: 25px 25px, 37px 37px;
+    radial-gradient(circle, #ff174f 1px, transparent 1.6px),
+    radial-gradient(circle, #a34cff 1px, transparent 1.6px);
+  background-size: 23px 23px, 35px 35px;
   background-position: 0 0, 12px 12px;
 }
+
+/* SUBTLE COMIC GRID */
 
 .background-grid {
   position: fixed;
   inset: 0;
-  z-index: -2;
-  opacity: .25;
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0.16;
   background:
-    linear-gradient(45deg, transparent 49.5%, rgba(255,23,79,.18) 50%, transparent 50.5%),
-    linear-gradient(-45deg, transparent 49.5%, rgba(140,39,255,.15) 50%, transparent 50.5%);
+    linear-gradient(
+      45deg,
+      transparent 49.5%,
+      rgba(255, 23, 79, 0.22) 50%,
+      transparent 50.5%
+    ),
+    linear-gradient(
+      -45deg,
+      transparent 49.5%,
+      rgba(140, 39, 255, 0.20) 50%,
+      transparent 50.5%
+    );
   background-size: 90px 90px;
   mask-image: linear-gradient(to bottom, black, transparent);
 }
@@ -67,17 +93,19 @@ body::before {
   inset: 0;
   pointer-events: none;
   z-index: 10;
-  opacity: .09;
+  opacity: 0.07;
   background: repeating-linear-gradient(
     transparent 0px,
     transparent 3px,
-    rgba(255,23,79,.2) 4px
+    rgba(255, 23, 79, 0.2) 4px
   );
 }
 
 /* MAIN DASHBOARD */
 
 .dashboard {
+  position: relative;
+  z-index: 1;
   width: min(1500px, 100%);
   margin: auto;
   padding: 25px;
@@ -92,7 +120,7 @@ body::before {
   justify-content: space-between;
   gap: 20px;
   padding-bottom: 22px;
-  border-bottom: 1px solid rgba(255,23,79,.55);
+  border-bottom: 1px solid rgba(255, 23, 79, 0.65);
   box-shadow: 0 8px 25px -20px var(--red);
 }
 
@@ -111,15 +139,17 @@ body::before {
   color: var(--red);
   font-size: 26px;
   font-weight: bold;
-  transform: rotate(0deg);
-  box-shadow: 0 0 18px rgba(255,23,79,.55);
-  background: rgba(255,23,79,.08);
+  background: rgba(255, 23, 79, 0.12);
+  box-shadow:
+    0 0 18px rgba(255, 23, 79, 0.55),
+    inset 0 0 15px rgba(255, 23, 79, 0.15);
 }
 
 .brand h1 {
   font-size: 22px;
   letter-spacing: 3px;
-  text-shadow: 0 0 15px rgba(255,23,79,.4);
+  text-shadow: 2px 2px 0 rgba(140, 39, 255, 0.7),
+    0 0 15px rgba(255, 23, 79, 0.4);
 }
 
 .brand h1 span {
@@ -154,7 +184,7 @@ body::before {
 .clock {
   text-align: right;
   color: var(--red);
-  text-shadow: 0 0 15px rgba(255,23,79,.4);
+  text-shadow: 0 0 15px rgba(255, 23, 79, 0.4);
 }
 
 #clock {
@@ -183,24 +213,31 @@ body::before {
   gap: 20px;
 }
 
+/* GLASS / COMIC PANELS */
+
 .panel {
   background:
-    linear-gradient(135deg, rgba(255,23,79,.055), transparent 45%),
+    linear-gradient(
+      135deg,
+      rgba(255, 23, 79, 0.09),
+      transparent 45%
+    ),
     var(--panel);
-  border: 1px solid rgba(140,39,255,.4);
-  border-left: 2px solid var(--red);
+  border: 1px solid rgba(140, 39, 255, 0.48);
+  border-left: 3px solid var(--red);
   border-radius: 5px;
   padding: 20px;
   box-shadow:
-    0 0 22px rgba(140,39,255,.08),
-    inset 0 0 25px rgba(255,23,79,.025);
-  backdrop-filter: blur(12px);
-  transition: border-color .3s, box-shadow .3s;
+    0 0 22px rgba(140, 39, 255, 0.12),
+    inset 0 0 25px rgba(255, 23, 79, 0.04);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  transition: border-color 0.3s, box-shadow 0.3s;
 }
 
 .panel:hover {
-  border-color: rgba(255,23,79,.7);
-  box-shadow: 0 0 25px rgba(255,23,79,.1);
+  border-color: rgba(255, 23, 79, 0.85);
+  box-shadow: 0 0 25px rgba(255, 23, 79, 0.16);
 }
 
 .panel-heading {
@@ -209,7 +246,7 @@ body::before {
   letter-spacing: 2px;
   margin-bottom: 20px;
   font-weight: bold;
-  text-shadow: 0 0 12px rgba(255,23,79,.4);
+  text-shadow: 0 0 12px rgba(255, 23, 79, 0.4);
 }
 
 /* SYSTEM STATUS */
@@ -241,7 +278,7 @@ body::before {
   width: 45%;
   background: linear-gradient(90deg, var(--red), var(--purple));
   box-shadow: 0 0 12px var(--red);
-  transition: width .5s;
+  transition: width 0.5s;
 }
 
 .progress-fill.red {
@@ -255,21 +292,21 @@ body::before {
   width: 100%;
   padding: 12px;
   margin-bottom: 9px;
-  background: rgba(140,39,255,.1);
+  background: rgba(140, 39, 255, 0.13);
   color: var(--white);
-  border: 1px solid rgba(140,39,255,.5);
+  border: 1px solid rgba(140, 39, 255, 0.6);
   border-radius: 3px;
   font-family: inherit;
   font-size: 11px;
   cursor: pointer;
-  transition: .3s;
+  transition: 0.3s;
 }
 
 .action-button:hover {
   background: var(--red);
   color: white;
   border-color: var(--red);
-  box-shadow: 0 0 20px rgba(255,23,79,.5);
+  box-shadow: 0 0 20px rgba(255, 23, 79, 0.5);
   transform: translateX(3px);
 }
 
@@ -303,7 +340,7 @@ body::before {
   position: absolute;
   border-radius: 50%;
   border: 1px solid var(--purple);
-  box-shadow: 0 0 20px rgba(140,39,255,.35);
+  box-shadow: 0 0 20px rgba(140, 39, 255, 0.35);
 }
 
 .ring-one {
@@ -337,8 +374,8 @@ body::before {
   border: 2px solid var(--red);
   box-shadow:
     0 0 25px var(--red),
-    0 0 55px rgba(140,39,255,.45),
-    inset 0 0 30px rgba(255,23,79,.55);
+    0 0 55px rgba(140, 39, 255, 0.45),
+    inset 0 0 30px rgba(255, 23, 79, 0.55);
   animation: corePulse 3s infinite;
 }
 
@@ -355,7 +392,7 @@ body::before {
   position: absolute;
   width: 100%;
   height: 100%;
-  border: 1px dashed rgba(255,23,79,.4);
+  border: 1px dashed rgba(255, 23, 79, 0.4);
   border-radius: 50%;
   animation: rotate 20s linear infinite;
 }
@@ -364,7 +401,7 @@ body::before {
   color: var(--red);
   font-size: 17px;
   letter-spacing: 2px;
-  text-shadow: 0 0 12px rgba(255,23,79,.5);
+  text-shadow: 0 0 12px rgba(255, 23, 79, 0.5);
 }
 
 .core-subtitle {
@@ -382,12 +419,12 @@ body::before {
   border: 1px solid var(--red);
   border-radius: 30px;
   color: white;
-  background: rgba(255,23,79,.12);
+  background: rgba(255, 23, 79, 0.15);
   font-family: inherit;
   letter-spacing: 2px;
   cursor: pointer;
-  box-shadow: 0 0 18px rgba(255,23,79,.2);
-  transition: .3s;
+  box-shadow: 0 0 18px rgba(255, 23, 79, 0.25);
+  transition: 0.3s;
 }
 
 .voice-button:hover {
@@ -412,13 +449,19 @@ body::before {
 
 .command-panel {
   background:
-    linear-gradient(120deg, rgba(255,23,79,.06), transparent),
+    linear-gradient(
+      120deg,
+      rgba(255, 23, 79, 0.09),
+      transparent
+    ),
     var(--panel);
-  border: 1px solid rgba(255,23,79,.45);
+  border: 1px solid rgba(255, 23, 79, 0.5);
   border-left: 3px solid var(--red);
   padding: 20px;
   border-radius: 5px;
-  box-shadow: 0 0 25px rgba(255,23,79,.07);
+  box-shadow: 0 0 25px rgba(255, 23, 79, 0.1);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
 }
 
 .chat-output {
@@ -443,9 +486,9 @@ body::before {
   display: flex;
   align-items: center;
   gap: 12px;
-  border: 1px solid rgba(140,39,255,.55);
+  border: 1px solid rgba(140, 39, 255, 0.6);
   padding: 8px 12px;
-  background: #09060e;
+  background: rgba(9, 6, 14, 0.95);
 }
 
 .command-prefix {
@@ -472,7 +515,7 @@ body::before {
   cursor: pointer;
   font-family: inherit;
   font-weight: bold;
-  transition: .3s;
+  transition: 0.3s;
 }
 
 .command-form button:hover {
@@ -488,7 +531,7 @@ body::before {
   gap: 10px;
   padding-top: 22px;
   margin-top: 25px;
-  border-top: 1px solid rgba(255,23,79,.3);
+  border-top: 1px solid rgba(255, 23, 79, 0.3);
   color: var(--muted);
   font-size: 9px;
   letter-spacing: 1px;
@@ -497,13 +540,21 @@ body::before {
 /* ANIMATIONS */
 
 @keyframes rotate {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 @keyframes pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: .3; }
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.3;
+  }
 }
 
 @keyframes corePulse {
@@ -520,6 +571,10 @@ body::before {
 /* TABLET AND MOBILE */
 
 @media (max-width: 900px) {
+  body {
+    background-attachment: scroll;
+  }
+
   .main-layout {
     grid-template-columns: 1fr 1fr;
   }
@@ -569,4 +624,5 @@ body::before {
   .system-indicator {
     font-size: 9px;
   }
-}
+                    }
+   

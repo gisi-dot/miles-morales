@@ -2,7 +2,7 @@
 /* ==========================================
    MILES MORALES — SPIDER-VERSE
    PROJECT MM-01
-   VISUAL REBUILD // VERSION 4.0
+   VISUAL REBUILD // VERSION 4.1
 ========================================== */
 
 :root {
@@ -123,7 +123,6 @@ body::before {
   justify-content: space-between;
   gap: 20px;
   padding-bottom: 22px;
-
   border-bottom: 2px solid rgba(237, 23, 75, 0.65);
 }
 
@@ -138,7 +137,6 @@ body::before {
   height: 55px;
   display: grid;
   place-items: center;
-
   background: var(--red);
   color: white;
   font-size: 21px;
@@ -241,7 +239,6 @@ body::before {
 
   border: 1px solid rgba(189, 131, 236, 0.25);
   border-left: 3px solid var(--red);
-
   border-radius: 2px;
 
   box-shadow:
@@ -276,7 +273,6 @@ body::before {
   align-items: center;
   gap: 8px;
   margin: 17px 0 8px;
-
   color: var(--muted);
   font-size: 11px;
 }
@@ -310,17 +306,14 @@ body::before {
   display: flex;
   align-items: center;
   gap: 12px;
-
   width: 100%;
   padding: 13px;
   margin-bottom: 9px;
 
   color: var(--white);
   background: rgba(119, 36, 184, 0.1);
-
   border: 1px solid rgba(189, 131, 236, 0.25);
   border-left: 3px solid var(--purple);
-
   border-radius: 2px;
 
   font-family: inherit;
@@ -339,7 +332,6 @@ body::before {
   place-items: center;
   width: 22px;
   height: 22px;
-
   color: var(--red-light);
   font-size: 19px;
 }
@@ -374,10 +366,8 @@ body::before {
 .core-container {
   position: relative;
   isolation: isolate;
-
   display: grid;
   place-items: center;
-
   width: 310px;
   height: 310px;
   margin-bottom: 25px;
@@ -385,46 +375,34 @@ body::before {
   background:
     radial-gradient(
       circle,
-      rgba(119, 36, 184, 0.19),
-      rgba(8, 5, 11, 0.04) 60%,
-      transparent 72%
+      rgba(119, 36, 184, 0.15),
+      rgba(8, 5, 11, 0.04) 65%,
+      transparent 76%
     );
 }
 
-/* REMOVE ALL OLD RINGS */
+/* REMOVE OLD RINGS */
 
 .core-ring,
 .core-orbit {
   display: none !important;
 }
 
-/* WEB */
+/* ACTUAL SPIDERWEB */
 
 .core-web {
   position: absolute;
   inset: 0;
   z-index: 2;
-
-  border-radius: 50%;
   pointer-events: none;
 
-  background-image:
-    radial-gradient(
-      ellipse at center,
-      transparent 0 24%,
-      rgba(255, 255, 255, 0.13) 24.3%,
-      transparent 24.8%,
-      transparent 38%,
-      rgba(255, 255, 255, 0.12) 38.3%,
-      transparent 38.8%,
-      transparent 53%,
-      rgba(255, 255, 255, 0.11) 53.3%,
-      transparent 53.8%
-    );
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 310 310'%3E%3Cg fill='none' stroke='%23e9dce9' stroke-width='1.15' opacity='.72'%3E%3Cpath d='M155 155 L155 3 M155 155 L232 24 M155 155 L286 79 M155 155 L307 155 M155 155 L286 231 M155 155 L232 286 M155 155 L155 307 M155 155 L78 286 M155 155 L24 231 M155 155 L3 155 M155 155 L24 79 M155 155 L78 24'/%3E%3Cpath d='M155 34 Q172 42 177 53 Q155 61 133 53 Q138 42 155 34Z'/%3E%3Cpath d='M155 61 Q191 70 204 91 Q155 109 106 91 Q119 70 155 61Z'/%3E%3Cpath d='M155 91 Q209 103 231 132 Q155 158 79 132 Q101 103 155 91Z'/%3E%3Cpath d='M155 121 Q225 132 254 169 Q155 207 56 169 Q85 132 155 121Z'/%3E%3Cpath d='M155 155 Q240 164 274 204 Q155 253 36 204 Q70 164 155 155Z'/%3E%3Cpath d='M155 184 Q239 194 267 232 Q155 278 43 232 Q71 194 155 184Z'/%3E%3C/g%3E%3C/svg%3E");
 
-  opacity: 0.55;
-  -webkit-mask-image: radial-gradient(circle, transparent 0 14%, black 40% 100%);
-  mask-image: radial-gradient(circle, transparent 0 14%, black 40% 100%);
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  opacity: 0.85;
 }
 
 /* SPIDER BACKGROUND */
@@ -432,13 +410,10 @@ body::before {
 .core-inner {
   position: relative;
   z-index: 3;
-
   display: grid;
   place-items: center;
-
   width: 190px;
   height: 190px;
-
   border-radius: 50%;
 
   background:
@@ -461,13 +436,10 @@ body::before {
 .core-symbol {
   position: relative;
   z-index: 4;
-
   display: grid;
   place-items: center;
-
   width: 145px;
   height: 155px;
-
   filter: drop-shadow(0 5px 5px rgba(0, 0, 0, 0.8));
 }
 
@@ -497,19 +469,14 @@ body::before {
 .voice-button {
   margin-top: 25px;
   padding: 15px 30px;
-
   color: white;
   background: var(--red);
-
   border: none;
   border-radius: 2px;
-
   font-family: inherit;
   font-weight: bold;
   letter-spacing: 2px;
-
   cursor: pointer;
-
   box-shadow: 4px 4px 0 var(--purple);
   transition: 0.25s;
 }
@@ -546,11 +513,8 @@ body::before {
 
   border: 1px solid rgba(189, 131, 236, 0.3);
   border-left: 3px solid var(--red);
-
   padding: 20px;
-
   box-shadow: 5px 5px 0 rgba(119, 36, 184, 0.12);
-
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
 }
@@ -559,7 +523,6 @@ body::before {
   height: 130px;
   overflow-y: auto;
   margin-bottom: 15px;
-
   color: var(--muted);
   font-size: 12px;
   line-height: 1.8;
@@ -578,9 +541,7 @@ body::before {
   display: flex;
   align-items: center;
   gap: 12px;
-
   padding: 8px 12px;
-
   border: 1px solid rgba(189, 131, 236, 0.4);
   background: rgba(5, 3, 8, 0.95);
 }
@@ -593,28 +554,21 @@ body::before {
 .command-form input {
   flex: 1;
   min-width: 0;
-
   border: none;
   outline: none;
-
   background: transparent;
   color: white;
-
   font-family: inherit;
   font-size: 13px;
 }
 
 .command-form button {
   padding: 10px 18px;
-
   color: white;
   background: var(--red);
-
   border: none;
-
   font-family: inherit;
   font-weight: bold;
-
   cursor: pointer;
   transition: 0.25s;
 }
@@ -629,12 +583,9 @@ body::before {
   display: flex;
   justify-content: space-between;
   gap: 10px;
-
   padding-top: 22px;
   margin-top: 25px;
-
   border-top: 1px solid rgba(237, 23, 75, 0.35);
-
   color: var(--muted);
   font-size: 9px;
   letter-spacing: 1px;
@@ -744,4 +695,4 @@ body::before {
     animation: none !important;
     scroll-behavior: auto !important;
   }
-}
+   }

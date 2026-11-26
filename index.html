@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#050914">
+  <meta name="theme-color" content="#08060c">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <title>MILES MORALES | AI SYSTEM</title>
@@ -18,7 +18,6 @@
 
   <main class="dashboard">
 
-    <!-- TOP BAR -->
     <header class="topbar">
       <div class="brand">
         <div class="spider-logo">M</div>
@@ -39,10 +38,8 @@
       </div>
     </header>
 
-    <!-- MAIN LAYOUT -->
     <section class="main-layout">
 
-      <!-- LEFT PANEL -->
       <aside class="side-panel">
 
         <div class="panel">
@@ -98,7 +95,6 @@
 
       </aside>
 
-      <!-- CENTER AI CORE -->
       <section class="core-section">
 
         <div class="core-label">
@@ -113,14 +109,26 @@
           <div class="core-ring ring-three"></div>
 
           <div class="core-inner">
-            <div class="core-symbol">M</div>
+            <div class="core-symbol" aria-label="Spider emblem">
+              <svg viewBox="0 0 120 140" xmlns="http://www.w3.org/2000/svg" role="img">
+                <g fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M60 43 L60 20"/>
+                  <path d="M60 47 C48 34 34 31 25 40 L14 54 L34 57 L17 76 L42 77 L31 99 L55 88"/>
+                  <path d="M60 47 C72 34 86 31 95 40 L106 54 L86 57 L103 76 L78 77 L89 99 L65 88"/>
+                  <path d="M60 47 C42 51 38 70 44 87 C48 101 55 112 60 122 C65 112 72 101 76 87 C82 70 78 51 60 47 Z" fill="currentColor" stroke="none"/>
+                  <path d="M60 122 L60 135"/>
+                </g>
+              </svg>
+            </div>
           </div>
 
+          <div class="core-web" aria-hidden="true"></div>
           <div class="core-orbit"></div>
 
         </div>
 
         <h2 id="core-status">MILES IS STANDBY</h2>
+
         <p class="core-subtitle">
           AWAITING YOUR COMMAND
         </p>
@@ -132,7 +140,6 @@
 
       </section>
 
-      <!-- RIGHT PANEL -->
       <aside class="side-panel">
 
         <div class="panel">
@@ -161,6 +168,7 @@
 
         <div class="panel">
           <div class="panel-heading">SYSTEM LOG</div>
+
           <div id="system-log" class="system-log">
             <p>> MILES INTERFACE LOADED</p>
             <p>> WAITING FOR INITIALIZATION</p>
@@ -172,7 +180,6 @@
 
     </section>
 
-    <!-- COMMAND CENTER -->
     <section class="command-panel">
 
       <div class="panel-heading">
@@ -207,7 +214,6 @@
 
     </section>
 
-    <!-- FOOTER -->
     <footer class="footer">
       <span>MILES MORALES AI SYSTEM</span>
       <span>PROJECT MM-01</span>
@@ -220,4 +226,4 @@
 
 </body>
   </html>
-  
+            

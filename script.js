@@ -3,8 +3,9 @@
    MILES MORALES - AI SYSTEM
    JAVASCRIPT ENGINE
    PROJECT MM-01
-   BACKEND CONNECTION // VERSION 2.1
-   MEMORY SYSTEM // VERSION 1.0
+   VERSION 2.2
+   CONVERSATION MEMORY // V1.0
+   PERSONAL MEMORY // V2.0
 ===================================== */
 
 const Miles = {
@@ -35,10 +36,15 @@ const Miles = {
 // MEMORY SYSTEM
 
 const MEMORY_KEY = "miles_conversation_memory_v1";
+const PERSONAL_MEMORY_KEY = "miles_personal_memory_v2";
 const MAX_MEMORY_MESSAGES = 50;
 
 let conversationHistory = [];
+let personalMemories = [];
 let restoringHistory = false;
+
+
+// CONVERSATION MEMORY
 
 function saveMemory() {
   try {
@@ -105,6 +111,120 @@ function clearMemory() {
   chatOutput.innerHTML = "";
 
   addLog("CONVERSATION MEMORY CLEARED");
+}
+
+
+// PERSONAL MEMORY
+
+function savePersonalMemories() {
+  try {
+    localStorage.setItem(
+      PERSONAL_MEMORY_KEY,
+      JSON.stringify(personalMemories)
+    );
+  } catch (error) {
+    console.error("PERSONAL MEMORY SAVE ERROR:", error);
+  }
+}
+
+function restorePersonalMemories() {
+  try {
+    const saved = localStorage.getItem(PERSONAL_MEMORY_KEY);
+
+    if (!saved) return;
+
+    const parsed = JSON.parse(saved);
+
+    if (Array.isArray(parsed)) {
+      personalMemories = parsed.filter(
+        item => typeof item === "string"
+      );
+    }
+
+    addLog("PERSONAL MEMORY RESTORED");
+
+  } catch (error) {
+    personalMemories = [];
+    console.error("PERSONAL MEMORY RESTORE ERROR:", error);
+  }
+}
+
+function rememberFact(fact) {
+  const cleanFact = fact.trim();
+
+  if (!cleanFact) {
+    respond("Tell me what you'd like me to remember.");
+    return;
+  }
+
+  const exists = personalMemories.some(
+    item => item.toLowerCase() === cleanFact.toLowerCase()
+  );
+
+  if (exists) {
+    respond("I already have that saved in my personal memory.");
+    return;
+  }
+
+  personalMemories.push(cleanFact);
+  savePersonalMemories();
+
+  addLog("NEW PERSONAL MEMORY SAVED");
+
+  respond("Got it. I've saved this to my personal memory: " + cleanFact);
+}
+
+function showPersonalMemories() {
+  if (personalMemories.length === 0) {
+    respond("My personal memory is currently empty. Tell me something by saying: Remember that...");
+    return;
+  }
+
+  const memoryList = personalMemories
+    .map((item, index) => (index + 1) + ". " + item)
+    .join(" ");
+
+  respond("Here is what I remember: " + memoryList);
+}
+
+function forgetFact(fact) {
+  const target = fact.trim().toLowerCase();
+
+  if (!target) {
+    respond("Tell me which memory you'd like me to forget.");
+    return;
+  }
+
+  const originalLength = personalMemories.length;
+
+  personalMemories = personalMemories.filter(
+    item => !item.toLowerCase().includes(target)
+  );
+
+  if (personalMemories.length === originalLength) {
+    respond("I couldn't find a matching personal memory.");
+    return;
+  }
+
+  savePersonalMemories();
+
+  addLog("PERSONAL MEMORY UPDATED");
+
+  respond("I've removed the matching personal memory.");
+}
+
+function forgetAllPersonalMemories() {
+  personalMemories = [];
+
+  try {
+    localStorage.removeItem(PERSONAL_MEMORY_KEY);
+  } catch (error) {
+    console.error("PERSONAL MEMORY CLEAR ERROR:", error);
+  }
+
+  addLog("ALL PERSONAL MEMORIES CLEARED");
+
+  respond("All personal memories have been cleared.");
 }
 
 
@@ -391,18 +511,55 @@ function processCommand(command) {
 
   addLog("COMMAND RECEIVED");
 
-  // CLEAR MEMORY
+
+  // FORGET ALL PERSONAL MEMORIES
 
   if (
+    text === "forget all personal memories" ||
+    text === "forget everything you remember about me"
+  ) {
+    forgetAllPersonalMemories();
+  }
+
+  // REMEMBER A FACT
+
+  else if (text.startsWith("remember that ")) {
+    rememberFact(command.slice(14));
+  }
+
+  else if (text.startsWith("remember ")) {
+    rememberFact(command.slice(9));
+  }
+
+  // SHOW PERSONAL MEMORIES
+
+  else if (
+    text === "what do you remember about me" ||
+    text === "what do you remember" ||
+    text === "show my memories" ||
+    text === "show memories"
+  ) {
+    showPersonalMemories();
+  }
+
+  // FORGET A SPECIFIC FACT
+
+  else if (text.startsWith("forget ")) {
+    const fact = command.slice(7);
+
+    forgetFact(fact);
+  }
+
+  // CLEAR CONVERSATION HISTORY
+
+  else if (
     text === "clear memory" ||
     text === "clear conversation" ||
     text === "forget this conversation"
   ) {
     clearMemory();
 
-    respond(
-      "Conversation memory cleared. Starting fresh."
-    );
+    respond("Conversation memory cleared. Starting fresh.");
   }
 
   // GREETINGS
@@ -492,7 +649,7 @@ function processCommand(command) {
     text.includes("commands")
   ) {
     respond(
-      "Try saying hello, ask me for the time or date, request a system scan, check my status, ask for the weather, or say clear memory."
+      "Try hello, ask for the time or date, request a system scan, check my status, ask for the weather, or use remember that, show my memories, forget, and clear memory."
     );
   }
 
@@ -631,12 +788,14 @@ voiceButton.addEventListener("click", initializeVoice);
 // INITIALIZATION
 
 restoreMemory();
+restorePersonalMemories();
 
 addLog("MILES JAVASCRIPT ENGINE LOADED");
 addLog("CLOUDFLARE BACKEND CONFIGURED");
-addLog("MEMORY SYSTEM INITIALIZED");
+addLog("CONVERSATION MEMORY INITIALIZED");
+addLog("PERSONAL MEMORY V2.0 INITIALIZED");
 addLog("OPENAI CONNECTION PENDING");
 addLog("SYSTEM INITIALIZATION COMPLETE");
 
 console.log("MILES MORALES AI SYSTEM INITIALIZED");
-       
+     

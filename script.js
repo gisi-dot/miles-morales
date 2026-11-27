@@ -3,7 +3,8 @@
    MILES MORALES - AI SYSTEM
    JAVASCRIPT ENGINE
    PROJECT MM-01
-   BACKEND CONNECTION // VERSION 2.0
+   BACKEND CONNECTION // VERSION 2.1
+   MEMORY SYSTEM // VERSION 1.0
 ===================================== */
 
 const Miles = {
@@ -29,6 +30,82 @@ const Miles = {
     ];
   }
 };
+
+
+// MEMORY SYSTEM
+
+const MEMORY_KEY = "miles_conversation_memory_v1";
+const MAX_MEMORY_MESSAGES = 50;
+
+let conversationHistory = [];
+let restoringHistory = false;
+
+function saveMemory() {
+  try {
+    localStorage.setItem(
+      MEMORY_KEY,
+      JSON.stringify(conversationHistory)
+    );
+  } catch (error) {
+    console.error("MILES MEMORY SAVE ERROR:", error);
+  }
+}
+
+function restoreMemory() {
+  try {
+    const savedMemory = localStorage.getItem(MEMORY_KEY);
+
+    if (!savedMemory) return;
+
+    const parsedMemory = JSON.parse(savedMemory);
+
+    if (!Array.isArray(parsedMemory)) return;
+
+    conversationHistory = parsedMemory
+      .filter(item =>
+        item &&
+        typeof item.sender === "string" &&
+        typeof item.message === "string" &&
+        typeof item.type === "string"
+      )
+      .slice(-MAX_MEMORY_MESSAGES);
+
+    restoringHistory = true;
+
+    conversationHistory.forEach(item => {
+      addMessage(
+        item.sender,
+        item.message,
+        item.type
+      );
+    });
+
+    restoringHistory = false;
+
+    addLog("PREVIOUS CONVERSATION RESTORED");
+
+  } catch (error) {
+    restoringHistory = false;
+    conversationHistory = [];
+
+    console.error("MILES MEMORY RESTORE ERROR:", error);
+    addLog("MEMORY RESTORE FAILED");
+  }
+}
+
+function clearMemory() {
+  conversationHistory = [];
+
+  try {
+    localStorage.removeItem(MEMORY_KEY);
+  } catch (error) {
+    console.error("MILES MEMORY CLEAR ERROR:", error);
+  }
+
+  chatOutput.innerHTML = "";
+
+  addLog("CONVERSATION MEMORY CLEARED");
+}
 
 
 // GET ELEMENTS
@@ -122,6 +199,19 @@ function addMessage(sender, message, type) {
   chatOutput.appendChild(element);
 
   chatOutput.scrollTop = chatOutput.scrollHeight;
+
+  if (!restoringHistory) {
+    conversationHistory.push({
+      sender: sender,
+      message: message,
+      type: type
+    });
+
+    conversationHistory =
+      conversationHistory.slice(-MAX_MEMORY_MESSAGES);
+
+    saveMemory();
+  }
 }
 
 
@@ -301,9 +391,23 @@ function processCommand(command) {
 
   addLog("COMMAND RECEIVED");
 
-  // GREETINGS
+  // CLEAR MEMORY
 
   if (
+    text === "clear memory" ||
+    text === "clear conversation" ||
+    text === "forget this conversation"
+  ) {
+    clearMemory();
+
+    respond(
+      "Conversation memory cleared. Starting fresh."
+    );
+  }
+
+  // GREETINGS
+
+  else if (
     text.includes("hello") ||
     text.includes("hi miles") ||
     text === "hey"
@@ -388,7 +492,7 @@ function processCommand(command) {
     text.includes("commands")
   ) {
     respond(
-      "Try saying hello, ask me for the time or date, request a system scan, check my status, or ask for the weather."
+      "Try saying hello, ask me for the time or date, request a system scan, check my status, ask for the weather, or say clear memory."
     );
   }
 
@@ -526,10 +630,13 @@ voiceButton.addEventListener("click", initializeVoice);
 
 // INITIALIZATION
 
+restoreMemory();
+
 addLog("MILES JAVASCRIPT ENGINE LOADED");
 addLog("CLOUDFLARE BACKEND CONFIGURED");
+addLog("MEMORY SYSTEM INITIALIZED");
 addLog("OPENAI CONNECTION PENDING");
 addLog("SYSTEM INITIALIZATION COMPLETE");
 
 console.log("MILES MORALES AI SYSTEM INITIALIZED");
-      
+       
